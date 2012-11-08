@@ -1,0 +1,14 @@
+[% INCLUDE header title = 'Login' %]
+
+        <form method="POST" action="">
+            <dl>
+                <dt><label for="username">Username (Email):</label></dt>
+                <dd><input type="text" id="username" name="username"></dd>
+                <dt><label for="password">Password:</label></dt>
+                <dd><input type="password" id="password" name="password"></dd>
+            </dl>
+
+            <input type="submit" name="login" value="Login">
+        </form>
+
+[% INCLUDE footer %]

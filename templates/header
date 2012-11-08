@@ -1,0 +1,7 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Freelancer Invoices :: [% title %]</title>
+    </head>
+    <body>
+        <h1>[% title %]</h1>
