@@ -1,0 +1,14 @@
+Authors: Mike Kelly, Jeremy Burton
+
+This is our final project for INFSCI 2710. The basic layout:
+
+cgi-bin/ - contains the actual script to go in cgi-bin. This is just a
+thin wrapper around Freelancer::WebApp.
+
+lib/ - contains the bulk of our code.
+
+   lib/Freelancer/WebApp.pm - the "Controller" for the application --
+       built on CGI::Application, handles HTTP requests, and does "the
+       right thing, then calls templates to actually display "stuff"
+
+templates/ - contains templates for the HTML pages.
