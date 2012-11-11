@@ -1,0 +1,11 @@
+[% INCLUDE header title = 'Home' %]
+
+[% IF c.session.param('user') %]
+        <p>Hello, [% c.session.param('user').email %]!</p>
+[% END %]
+
+        <p>
+            A control panel would go here...
+        </p>
+
+[% INCLUDE footer %]

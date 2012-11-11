@@ -1,6 +1,10 @@
 [% INCLUDE header title = 'Login' %]
 
-        <form method="POST" action="">
+[% IF error %]
+        <p class="error">[% error %]</p>
+[% END %]
+
+        <form method="POST" action="[% c.query.url('-path_info' => 1) %]">
             <dl>
                 <dt><label for="username">Username (Email):</label></dt>
                 <dd><input type="text" id="username" name="username"></dd>

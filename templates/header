@@ -2,6 +2,15 @@
 <html>
     <head>
         <title>Freelancer Invoices :: [% title %]</title>
+        <style type="text/css">
+            p.error {
+                color: red;
+            }
+            p.error:before {
+                content: 'ERROR: ';
+                font-weight: bold;
+            }
+        </style>
     </head>
     <body>
         <h1>[% title %]</h1>
