@@ -5,6 +5,7 @@ Build
 MANIFEST
 META.yml
 MYMETA.yml
+MYMETA.json
 Freelancer-Invoices-*.*/
 Freelancer-Invoices-*.tar*
 _build

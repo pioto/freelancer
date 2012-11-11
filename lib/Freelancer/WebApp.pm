@@ -5,6 +5,7 @@ package Freelancer::WebApp;
 
 use Exception::SEH;
 use File::Spec;
+use File::ShareDir qw(dist_dir);
 
 use base 'CGI::Application';
 use CGI::Application::Plugin::Redirect;
@@ -13,7 +14,7 @@ use CGI::Application::Plugin::TT;
 
 use Freelancer::User;
 
-my $BASE_DIR = '/usr/home/mikekelly/git/infsci-2710-invoices';
+my $BASE_DIR = dist_dir('Freelancer');
 
 sub setup {
     my $self = shift;
@@ -30,6 +31,7 @@ sub setup {
 
 sub do_home {
     my $self = shift;
+    my $q = $self->query;
 
     unless ($self->session->param('user')) {
         return $self->redirect($q->url.'/login');
