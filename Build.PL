@@ -13,6 +13,8 @@ my $build = Module::Build->new(
         'Exception::SEH' => 0,
         'File::ShareDir' => 0,
         'File::Spec' => 0,
+        'FindBin' => 0,
+        'YAML' => 0,
     },
     share_dir => 'share',
 );

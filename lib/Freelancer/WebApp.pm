@@ -4,8 +4,10 @@ use strict;
 package Freelancer::WebApp;
 
 use Exception::SEH;
-use File::Spec;
 use File::ShareDir qw(dist_dir);
+use File::Spec;
+use FindBin;
+use YAML qw(LoadFile);
 
 use base 'CGI::Application';
 use CGI::Application::Plugin::Redirect;
@@ -18,7 +20,11 @@ my $BASE_DIR = dist_dir('Freelancer');
 
 sub setup {
     my $self = shift;
+
     $self->tt_include_path(File::Spec->catfile($BASE_DIR, 'templates'));
+
+    $self->_load_config();
+
     $self->mode_param(
         path_info => 1,
     );
@@ -27,6 +33,14 @@ sub setup {
         home => 'do_home',
         login => 'do_login',
     );
+}
+
+sub _load_config {
+    my $self = shift;
+
+    my $config_file = File::Spec->catfile($FindBin::Bin, 'config.yaml');
+
+    $self->{_config} = LoadFile($config_file);
 }
 
 sub do_home {
