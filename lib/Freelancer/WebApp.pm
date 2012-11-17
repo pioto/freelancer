@@ -41,6 +41,8 @@ sub _load_config {
     my $config_file = File::Spec->catfile($FindBin::Bin, 'config.yaml');
 
     $self->{_config} = LoadFile($config_file);
+
+    Freelancer::DBI->configure(%{$self->{_config}{db}});
 }
 
 sub do_home {

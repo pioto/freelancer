@@ -9,12 +9,17 @@ my $build = Module::Build->new(
         'CGI::Application::Plugin::Redirect' => 0,
         'CGI::Application::Plugin::Session' => 0,
         'CGI::Application::Plugin::TT' => 0,
+        'DBI' => 0,
         'Exception::Class' => 0,
         'Exception::SEH' => 0,
         'File::ShareDir' => 0,
         'File::Spec' => 0,
         'FindBin' => 0,
         'YAML' => 0,
+    },
+    recommends => {
+        'DBD::SQLite' => 0,
+        #'DBD::mysql' => 0,
     },
     share_dir => 'share',
 );
