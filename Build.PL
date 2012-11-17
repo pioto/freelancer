@@ -5,6 +5,8 @@ use Module::Build;
 my $build = Module::Build->new(
     module_name => 'Freelancer',
     requires => {
+        'Authen::Passphrase' => 0,
+        'Authen::Passphrase::BlowfishCrypt' => 0,
         'CGI::Application' => 0,
         'CGI::Application::Plugin::Redirect' => 0,
         'CGI::Application::Plugin::Session' => 0,

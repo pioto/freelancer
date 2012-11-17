@@ -45,7 +45,13 @@ Errors thrown will all be subclasses of Freelancer::User::Error.
 
 =cut
 
+use Authen::Passphrase;
+use Authen::Passphrase::BlowfishCrypt;
+use Exception::SEH;
+
 our $VERSION = '0.1';
+
+use Freelancer::DBI;
 
 use Exception::Class (
     'Freelancer::User::Error' => {},
@@ -58,6 +64,13 @@ use Exception::Class (
         isa => 'Freelancer::User::Error',
     },
 );
+
+# 'cost' setting to use for bcrypt
+use constant BLOWFISH_COST => 8;
+
+# all the attributes we should keep in a new object
+my @OBJ_ATTRS = qw(user_id email first_name last_name business_name
+business_desc phone address);
 
 =head1 CLASS METHODS
 
@@ -140,10 +153,33 @@ sub authenticate {
     my $class = shift;
     my %args = @_;
 
-    #return my $self = bless \%args, $class;
+    my $fdbi = Freelancer::DBI->new();
+    # fetch the user from the database:
+    my $user_info;
+    try {
+        my $sth = $fdbi->sql_get_user_by_email();
+        $sth->execute($args{email});
+        $user_info = $sth->fetchrow_hashref('NAME_lc');
+        unless ($user_info) {
+            Freelancer::User::Error::InvalidUserOrPassword->throw("Username not found");
+        }
+        if ($sth->fetch()) {
+            # something else matched??
+            Freelancer::User::Error->throw("Duplicates for $args{email}?");
+        }
 
-    # TODO
-    Freelancer::User::Error->throw("Unimplemented");
+        $class->_check_password($args{password}, $user_info->{password})
+            or Freelancer::User::Error::InvalidUserOrPassword->throw("Invalid password");
+    } catch (Freelancer::User::Error $e) {
+        die $e;
+    } catch ($e) {
+        die $e;
+    }
+
+    my %o;
+    $o{$_} = $user_info->{$_} foreach (@OBJ_ATTRS);
+    my $self = bless \%o, $class;
+    return $self;
 }
 
 =head1 OBJECT METHODS
@@ -210,5 +246,29 @@ Return the user's business' mailing address.
 =cut
 
 sub address { $_[0]{address} }
+
+## _check_password
+#
+# Checks that the given password matches the given password crypt.
+sub _check_password {
+    my $class_or_object = shift;
+    my ($password, $crypt) = @_;
+
+    my $ppr = Authen::Passphrase->from_rfc2307($crypt);
+    return $ppr->match($password);
+}
+
+## _hash_password
+#
+# Given a passphrase, return its crypted hash.
+sub _hash_password {
+    my $class_or_object = shift;
+    my ($password) = @_;
+
+    my $ppr = Authen::Passphrase::BlowfishCrypt->new(
+        cost => BLOWFISH_COST, salt_random => 1,
+        passphrase => $password);
+    return $ppr->as_rfc2307;
+}
 
 1;

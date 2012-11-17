@@ -1,7 +1,7 @@
 [% INCLUDE header title = 'Home' %]
 
 [% IF c.session.param('user') %]
-        <p>Hello, [% c.session.param('user').email %]!</p>
+        <p>Hello, [% c.session.param('user').first_name %]!</p>
 [% END %]
 
         <p>
