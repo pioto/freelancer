@@ -32,6 +32,7 @@ sub setup {
     $self->run_modes(
         home => 'do_home',
         login => 'do_login',
+        logout => 'do_logout',
     );
 }
 
@@ -77,4 +78,14 @@ sub do_login {
     }
 
     $self->tt_process('login', {error => $error});
+}
+
+sub do_logout {
+    my $self = shift;
+    my $q = $self->query;
+
+    $self->session->delete();
+    $self->session->flush();
+
+    $self->redirect($q->url);
 }

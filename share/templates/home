@@ -8,4 +8,6 @@
             A control panel would go here...
         </p>
 
+        <p><a href="[% c.query.url %]/logout">Logout</a></p>
+
 [% INCLUDE footer %]
