@@ -17,8 +17,8 @@ Freelancer::User - A user of the "Freelancer" system.
       password => '123456',
       first_name => 'Bob',
       last_name => 'Smith',
-      business_name => "Bob's Bots",
-      business_desc => "Bob's Bots is the best buyer of robots in"
+      biz_name => "Bob's Bots",
+      biz_desc => "Bob's Bots is the best buyer of robots in"
           ." Western Pennsylvania",
       phone => '412-555-1234',
       address => "123 Main St.\nPittsburgh, PA 15203",
@@ -69,8 +69,8 @@ use Exception::Class (
 use constant BLOWFISH_COST => 8;
 
 # all the attributes we should keep in a new object
-my @OBJ_ATTRS = qw(user_id email first_name last_name business_name
-business_desc phone address);
+my @OBJ_ATTRS = qw(user_id email first_name last_name biz_name
+biz_desc phone address);
 
 =head1 CLASS METHODS
 
@@ -102,11 +102,11 @@ The user's first name.
 
 The user's last name.
 
-=item business_name
+=item biz_name
 
 The name of the user's business.
 
-=item business_desc
+=item biz_desc
 
 A description of the user's business.
 
@@ -215,21 +215,21 @@ Return the user's last name.
 
 sub last_name { $_[0]{last_name} }
 
-=head2 business_name
+=head2 biz_name
 
 Return the user's business' name.
 
 =cut
 
-sub business_name { $_[0]{business_name} }
+sub biz_name { $_[0]{biz_name} }
 
-=head2 business_desc
+=head2 biz_desc
 
 Return a description of the user's business.
 
 =cut
 
-sub business_desc { $_[0]{business_desc} }
+sub biz_desc { $_[0]{biz_desc} }
 
 =head2 phone
 
