@@ -273,6 +273,68 @@ Return the user's business' mailing address.
 
 sub address { $_[0]{address} }
 
+=head2 change_password
+
+Given their current password, and 2 copies of their proposed new one,
+verify that they gave the correct old password and that the new ones
+agree. If so, update the password in the database.
+
+Takes the following parameters:
+
+=over
+
+=item old_password
+
+Their current password.
+
+=item new_password
+
+Their new password.
+
+=item new_password2
+
+Their new password, again.
+
+=back
+
+=cut
+
+sub change_password {
+    my $self = shift;
+    my %args = @_;
+
+    unless ($args{new_password} && $args{new_password2}
+        && $args{new_password} eq $args{new_password2}) {
+        Freelancer::User::Error->throw("Passwords do not match, or are invalid.");
+    }
+
+    my $fdbi = Freelancer::DBI->new();
+    try {
+        my $get_pw_crypt = $fdbi->sql_get_pw_crypt();
+        $get_pw_crypt->execute($self->{user_id});
+
+        my ($cur_pw_crypt) = $get_pw_crypt->fetch();
+        $self->_check_password($args{old_password}, $cur_pw_crypt)
+            or Freelancer::User::Error::InvalidUserOrPassword->throw("Invalid current password.");
+
+        my $new_pw_crypt = $self->_hash_password($args{new_password});
+
+        my $set_pw_crypt = $fdbi->sql_set_pw_crypt();
+        my $updated = $set_pw_crypt->execute($new_pw_crypt, $self->{user_id});
+        if ($updated < 1) {
+            Freelancer::User::Error->throw("Didn't update any user passwords?");
+        } elsif ($updated > 1) {
+            Freelancer::User::Error->throw("Updated > 1 user passwords??");
+        }
+
+        $fdbi->commit();
+    } catch (Freelancer::User::Error $e) {
+        die $e;
+    } catch ($e) {
+        die $e;
+    }
+}
+
 ## _check_password
 #
 # Checks that the given password matches the given password crypt.

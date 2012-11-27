@@ -33,6 +33,9 @@ sub setup {
         home => 'do_home',
         login => 'do_login',
         logout => 'do_logout',
+
+        'user' => 'do_user',
+        'change_password' => 'do_change_password',
     );
 }
 
@@ -88,4 +91,43 @@ sub do_logout {
     $self->session->flush();
 
     $self->redirect($q->url);
+}
+
+sub do_user {
+    my $self = shift;
+    my $q = $self->query;
+
+    # Login Required
+    unless ($self->session->param('user')) {
+        return $self->redirect($q->url.'/login');
+    }
+
+    $self->tt_process('user');
+}
+
+sub do_change_password {
+    my $self = shift;
+    my $q = $self->query;
+
+    # Login Required
+    unless ($self->session->param('user')) {
+        return $self->redirect($q->url.'/login');
+    }
+
+    my $error;
+    if ($q->param('change_password')) {
+        try {
+            my $user = $self->session->param('user');
+            $user->change_password(
+                old_password => $q->param('old_password'),
+                new_password => $q->param('new_password'),
+                new_password2 => $q->param('new_password2'),
+            );
+            return $self->redirect($q->url.'/user');
+        } catch ($e) {
+            $error = $e;
+        }
+    }
+
+    $self->tt_process('change_password', {error => $error});
 }

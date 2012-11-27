@@ -1,7 +1,7 @@
 [% INCLUDE header title = 'Home' %]
 
-        <p>
-            A control panel would go here...
-        </p>
+        <ul>
+          <li><a href="[% c.query.url %]/user">User Settings</a></li>
+        </ul>
 
 [% INCLUDE footer %]

@@ -75,6 +75,27 @@ INSERT INTO Users
 VALUES (?, ?, ?, ?, ?, ?, ?, ?)
 END
 
+=head2 get_pw_crypt
+
+Given a user_id, returns the password crypt.
+
+=cut
+
+__PACKAGE__->set_sql('get_pw_crypt', <<"END", 'freelancer');
+SELECT password FROM Users WHERE user_id = ?
+END
+
+=head2 set_pw_crypt
+
+Given a new password crypt and a user_id, set the new password crypt for
+that user_id.
+
+=cut
+
+__PACKAGE__->set_sql('set_pw_crypt', <<"END", 'freelancer');
+UPDATE Users SET password = ? WHERE user_id = ?
+END
+
 #### ^^^^ INSERT MORE QUERIES HERE ^^^^ ####
 
 #### INTERNAL GOO ####

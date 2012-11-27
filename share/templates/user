@@ -1,0 +1,7 @@
+[% INCLUDE header title = 'User Settings' %]
+
+        <ul>
+          <li><a href="[% c.query.url %]/change_password">Change Password</a></li>
+        </ul>
+
+[% INCLUDE footer %]
