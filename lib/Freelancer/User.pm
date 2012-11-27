@@ -191,6 +191,14 @@ These object methods are provided:
 # NOTE: these currently assume this object is "non-lazy", meaning that
 # the 'new' and 'authenticate' methods will fully populate the object.
 
+=head2 id
+
+Return the user's unique ID (user_id).
+
+=cut
+
+sub id { $_[0]{user_id} }
+
 =head2 email
 
 Return the user's email.
