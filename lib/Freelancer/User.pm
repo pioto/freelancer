@@ -126,7 +126,25 @@ sub new {
     my $class = shift;
     my %args = @_;
 
-    Freelancer::User::Error->throw("Unimplemented");
+    my $self = bless \%args, $class;
+    $self->{password} = $self->_hash_password($self->{password});
+
+    my $fdbi = Freelancer::DBI->new();
+    try {
+        my $sth = $fdbi->sql_insert_user();
+        $sth->execute(@{$self}{qw(email first_name last_name biz_name
+            biz_desc phone address password)});
+
+        $self->{user_id} = $fdbi->db_freelancer()->last_insert_id(undef, undef, undef, undef);
+
+        $fdbi->commit();
+    } catch (Freelancer::User::Error $e) {
+        die $e;
+    } catch ($e) {
+        die $e;
+    }
+
+    return $self;
 }
 
 =head2 authenticate

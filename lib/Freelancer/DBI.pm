@@ -42,6 +42,39 @@ __PACKAGE__->set_sql('get_user_by_email', <<"END", 'freelancer');
 SELECT * FROM Users WHERE email = ?
 END
 
+=head2 insert_user
+
+Given all information for a user, insert them into the database. Takes
+these parameters, in order:
+
+=over
+
+=item email
+
+=item first_name
+
+=item last_name
+
+=item biz_name
+
+=item biz_desc
+
+=item phone
+
+=item address
+
+=item password
+
+=back
+
+=cut
+
+__PACKAGE__->set_sql('insert_user', <<"END", 'freelancer');
+INSERT INTO Users
+  (email, first_name, last_name, biz_name, biz_desc, phone, address, password)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+END
+
 #### ^^^^ INSERT MORE QUERIES HERE ^^^^ ####
 
 #### INTERNAL GOO ####
