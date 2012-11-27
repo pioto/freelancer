@@ -1,17 +1,16 @@
 -- Schema for the Freelancer project:
 
 CREATE TABLE Users (
-        user_id integer,
+        user_id integer PRIMARY KEY AUTOINCREMENT,
         first_name      varchar(30) NOT NULL,
         last_name       varchar(30) NOT NULL,
         phone           varchar(15) NOT NULL,
         password        varchar(10) NOT NULL,
-        email           varchar(20) UNIQUE,
+        email           varchar(100) UNIQUE,
         biz_name        varchar(30),
         biz_desc        varchar(250),
-        address         varchar(100) NOT NULL,
-
-        PRIMARY KEY (user_id ) );
+        address         varchar(100) NOT NULL
+);
 
 
 CREATE TABLE Customers (
