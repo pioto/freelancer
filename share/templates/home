@@ -1,13 +1,7 @@
 [% INCLUDE header title = 'Home' %]
 
-[% IF c.session.param('user') %]
-        <p>Hello, [% c.session.param('user').first_name %]!</p>
-[% END %]
-
         <p>
             A control panel would go here...
         </p>
-
-        <p><a href="[% c.query.url %]/logout">Logout</a></p>
 
 [% INCLUDE footer %]

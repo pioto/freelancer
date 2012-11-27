@@ -1,2 +1,6 @@
+[% IF c.session.param('user') %]
+        <p><a href="[% c.query.url %]/logout">Logout</a></p>
+[% END %]
+
     </body>
 </html>
