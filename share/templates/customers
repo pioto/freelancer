@@ -1,0 +1,15 @@
+[% INCLUDE header title = 'Customers' %]
+
+       <p><a href="[% c.query.url %]/add_customer">Add a Customer</a></p>
+
+[% IF customers && customers.size %]
+    <ul>
+    [% FOREACH customer = customers %]
+        <li>[% customer %]</li>
+    [% END %]
+    </ul>
+[% ELSE %]
+        <p>No customers yet.</p>
+[% END %]
+
+[% INCLUDE footer %]

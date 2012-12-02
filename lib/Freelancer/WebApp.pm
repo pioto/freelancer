@@ -36,6 +36,9 @@ sub setup {
 
         'user' => 'do_user',
         'change_password' => 'do_change_password',
+
+        'customers' => 'do_customers',
+        'add_customer' => 'do_add_customer',
     );
 }
 
@@ -110,14 +113,14 @@ sub do_change_password {
     my $q = $self->query;
 
     # Login Required
-    unless ($self->session->param('user')) {
+    my $user;
+    unless ($user = $self->session->param('user')) {
         return $self->redirect($q->url.'/login');
     }
 
     my $error;
     if ($q->param('change_password')) {
         try {
-            my $user = $self->session->param('user');
             $user->change_password(
                 old_password => $q->param('old_password'),
                 new_password => $q->param('new_password'),
@@ -130,4 +133,57 @@ sub do_change_password {
     }
 
     $self->tt_process('change_password', {error => $error});
+}
+
+sub do_customers {
+    my $self = shift;
+    my $q = $self->query;
+
+    # Login Required
+    my $user;
+    unless ($user = $self->session->param('user')) {
+        return $self->redirect($q->url.'/login');
+    }
+
+    my $customers;
+    my $error;
+    try {
+        $customers = [];
+        # Freelancer::Customer->list(user => $user);
+    } catch ($e) {
+        $error = $e;
+    }
+
+    $self->tt_process('customers', {
+            error => $error,
+            customers => $customers,
+        });
+}
+
+sub do_add_customer {
+    my $self = shift;
+    my $q = $self->query;
+
+    # Login Required
+    my $user;
+    unless ($user = $self->session->param('user')) {
+        return $self->redirect($q->url.'/login');
+    }
+
+    my $error;
+    if ($q->param('add_customer')) {
+        try {
+            my %args;
+            $args{$_} = $q->param($_) foreach (qw(first_name last_name
+                cust_since email phone street_address state zip company));
+            Freelancer::Customer->new(
+                user => $user,
+                %args,
+            );
+        } catch ($e) {
+            $error = $e;
+        }
+    }
+
+    $self->tt_process('add_customer', {error => $error});
 }

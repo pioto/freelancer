@@ -2,6 +2,7 @@
 
         <ul>
           <li><a href="[% c.query.url %]/user">User Settings</a></li>
+          <li><a href="[% c.query.url %]/customers">Customers</a></li>
         </ul>
 
 [% INCLUDE footer %]

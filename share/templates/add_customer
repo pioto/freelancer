@@ -1,0 +1,32 @@
+[% INCLUDE header title = 'Add Customer' %]
+
+[% IF error %]
+        <p class="error">[% error %]</p>
+[% END %]
+
+        <form method="POST" action="">
+            <dl>
+                <dt><label for="first_name">First Name:</label></dt>
+                <dd><input type="text" id="first_name" name="first_name"></dd>
+                <dt><label for="last_name">Last Name:</label></dt>
+                <dd><input type="text" id="last_name" name="last_name"></dd>
+                <dt><label for="cust_since">Customer Since:</label></dt>
+                <dd><input type="date" id="cust_since" name="cust_since"></dd>
+                <dt><label for="email">Email:</label></dt>
+                <dd><input type="email" id="email" name="email"></dd>
+                <dt><label for="phone">Phone:</label></dt>
+                <dd><input type="tel" id="phone" name="phone"></dd>
+                <dt><label for="street_address">Street Address:</label></dt>
+                <dd><input type="text" id="street_address" name="street_address"></dd>
+                <dt><label for="state">State:</label></dt>
+                <dd><input type="text" id="state" name="state"></dd>
+                <dt><label for="zip">ZIP Code:</label></dt>
+                <dd><input type="number" id="zip" name="zip"></dd>
+                <dt><label for="company">Company:</label></dt>
+                <dd><input type="text" id="company" name="company"></dd>
+            </dl>
+
+            <input type="submit" name="add_customer" value="Add Customer">
+        </form>
+
+[% INCLUDE footer %]
