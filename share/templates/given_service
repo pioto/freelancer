@@ -1,0 +1,27 @@
+[% INCLUDE header title = 'Service Given' %]
+
+[% IF error %]
+        <p class="error">[% error %]</p>
+[% END %]
+
+        <form method="POST" action="">
+            <input type="hidden" name="cust_id" value="[% customer.id %]">
+            <dl>
+                <dt><label for="serv_id">Service:</label></dt>
+                <dd>
+                    <select id="serv_id" name="serv_id">
+                        [% FOREACH service = services %]
+                        <option value="[% service.id %]">[% service.name %] ([% service.unit %])</option>
+                        [% END %]
+                    </select>
+                </dd>
+                <dt><label for="amount">Amount:</label></dt>
+                <dd><input type="number" id="amount" name="amount"></dd>
+                <dt><label for="date">Date:</label></dt>
+                <dd><input type="date" id="date" name="date"></dd>
+            </dl>
+
+            <input type="submit" name="given_service" value="Record Service Given">
+        </form>
+
+[% INCLUDE footer %]

@@ -5,7 +5,14 @@
 [% IF customers && customers.size %]
     <ul>
     [% FOREACH customer = customers %]
-        <li>[% customer %]</li>
+        <li>
+            <a href="[% c.query.url %]/customer?cust_id=[% customer.id %]>
+            [% customer.first_name %] [% customer.last_name %]
+        [% IF customer.company %]
+            ([% customer.company %])
+        [% END %]
+            </a>
+        </li>
     [% END %]
     </ul>
 [% ELSE %]

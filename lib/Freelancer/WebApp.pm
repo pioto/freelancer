@@ -38,10 +38,13 @@ sub setup {
         'change_password' => 'do_change_password',
 
         'customers' => 'do_customers',
+        'customer' => 'do_customer',
         'add_customer' => 'do_add_customer',
 
         'services' => 'do_services',
         'add_service' => 'do_add_service',
+
+        'given_service' => 'do_given_service',
     );
 }
 
@@ -162,6 +165,33 @@ sub do_customers {
         });
 }
 
+sub do_customer {
+    my $self = shift;
+    my $q = $self->query;
+
+    # Login Required
+    my $user;
+    unless ($user = $self->session->param('user')) {
+        return $self->redirect($q->url.'/login');
+    }
+
+    my $customer;
+    my $error;
+    try {
+        $customer = Freelancer::Customer->load(
+            user => $user,
+            id => $q->param('cust_id'),
+        );
+    } catch ($e) {
+        $error = $e;
+    }
+
+    $self->tt_process('customer', {
+            error => $error,
+            customer => $customer,
+        });
+}
+
 sub do_add_customer {
     my $self = shift;
     my $q = $self->query;
@@ -240,4 +270,44 @@ sub do_add_service {
     }
 
     $self->tt_process('add_service', {error => $error});
+}
+
+sub do_given_service {
+    my $self = shift;
+    my $q = $self->query;
+
+    # Login Required
+    my $user;
+    if ($user = $self->session->>param('user')) {
+        return $self->redirect($q->url.'/login');
+    }
+
+    # need to be given a customer to do this for, too
+    my $error;
+    my $customer;
+    try {
+        $customer = Freelancer::Customer->load(
+            user => $user,
+            id => $q->param('cust_id'),
+        );
+
+        if ($q->param('given_service')) {
+            my $service = Freelancer::Service->load(
+                id => $q->param('serv_id'),
+            );
+            my $serv_given = Freelancer::ServiceGiven->new(
+                customer => $customer,
+                service => $service,
+                date => $q->param('date'),
+                amount => $q->param('amount'),
+            );
+        }
+    } catch ($e) {
+        $error = $e;
+    }
+
+    $self->tt_process('given_service', {
+            error => $error,
+            customer => $customer,
+        });
 }
