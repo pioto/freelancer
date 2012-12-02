@@ -1,0 +1,22 @@
+[% INCLUDE header title = 'Add Service' %]
+
+[% IF error %]
+        <p class="error">[% error %]</p>
+[% END %]
+
+        <form method="POST" action="">
+            <dl>
+                <dt><label for="serv_name">Service Name:</label></dt>
+                <dd><input type="text" id="serv_name" name="serv_name"></dd>
+                <dt><label for="serv_desc">Service Description:</label></dt>
+                <dd><input type="text" id="serv_desc" name="serv_desc"></dd>
+                <dt><label for="unit">Unit Name <em>(e.g. "Hours", "Photos", etc)</em>:</label></dt>
+                <dd><input type="text" id="unit" name="unit"></dd>
+                <dt><label for="price_perunit">Price per Unit:</label></dt>
+                <dd>$<input type="number" id="price_perunit" name="price_perunit"></dd>
+            </dl>
+
+            <input type="submit" name="add_service" value="Add Service">
+        </form>
+
+[% INCLUDE footer %]

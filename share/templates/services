@@ -1,0 +1,15 @@
+[% INCLUDE header title = 'Services' %]
+
+       <p><a href="[% c.query.url %]/add_service">Add a Service</a></p>
+
+[% IF services && services.size %]
+    <ul>
+    [% FOREACH service = services %]
+        <li>[% service %]</li>
+    [% END %]
+    </ul>
+[% ELSE %]
+        <p>No services yet.</p>
+[% END %]
+
+[% INCLUDE footer %]

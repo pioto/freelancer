@@ -39,6 +39,9 @@ sub setup {
 
         'customers' => 'do_customers',
         'add_customer' => 'do_add_customer',
+
+        'services' => 'do_services',
+        'add_service' => 'do_add_service',
     );
 }
 
@@ -148,8 +151,7 @@ sub do_customers {
     my $customers;
     my $error;
     try {
-        $customers = [];
-        # Freelancer::Customer->list(user => $user);
+        $customers = Freelancer::Customer->list(user => $user);
     } catch ($e) {
         $error = $e;
     }
@@ -186,4 +188,56 @@ sub do_add_customer {
     }
 
     $self->tt_process('add_customer', {error => $error});
+}
+
+sub do_services {
+    my $self = shift;
+    my $q = $self->query;
+
+    # Login Required
+    my $user;
+    unless ($user = $self->session->param('user')) {
+        return $self->redirect($q->url.'/login');
+    }
+
+    my $services;
+    my $error;
+    try {
+        $services = Freelancer::Service->list(user => $user);
+    } catch ($e) {
+        $error = $e;
+    }
+
+    $self->tt_process('services', {
+            error => $error,
+            services => $services,
+        });
+}
+
+sub do_add_service {
+    my $self = shift;
+    my $q = $self->query;
+
+    # Login Required
+    my $user;
+    unless ($user = $self->session->param('user')) {
+        return $self->redirect($q->url.'/login');
+    }
+
+    my $error;
+    if ($q->param('add_service')) {
+        try {
+            my %args;
+            $args{$_} = $q->param($_) foreach (qw(serv_name serv_desc
+                unit price_perunit));
+            Freelancer::Service->new(
+                user => $user,
+                %args,
+            );
+        } catch ($e) {
+            $error = $e;
+        }
+    }
+
+    $self->tt_process('add_service', {error => $error});
 }
