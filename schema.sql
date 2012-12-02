@@ -14,7 +14,7 @@ CREATE TABLE Users (
 
 
 CREATE TABLE Customers (
-        cust_id                 integer,
+        cust_id                 integer AUTOINCREMENT,
         first_name              varchar(30) NOT NULL,
         last_name               varchar(30) NOT NULL,
         user_id                 integer,
@@ -31,7 +31,7 @@ CREATE TABLE Customers (
                 on delete CASCADE on update CASCADE );
 
 CREATE TABLE Services (
-        serv_id                 integer,
+        serv_id                 integer AUTOINCREMENT,
         serv_name               varchar(30) NOT NULL,
         serv_desc               varchar(100) NOT NULL,
         user_id                 integer,
