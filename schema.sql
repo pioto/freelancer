@@ -60,7 +60,7 @@ CREATE TABLE Given_Services (
                 on delete SET NULL on update CASCADE );
 
 CREATE TABLE Invoices (
-        invoice_id              integer,
+        invoice_id              integer AUTOINCREMENT,
         user_id                 integer,
         issue_date              date NOT NULL,
         due_date                date NOT NULL,
@@ -71,7 +71,7 @@ CREATE TABLE Invoices (
                 on delete CASCADE on update CASCADE );
 
 CREATE TABLE Payments (
-        payment_num     integer,
+        payment_num     integer AUTOINCREMENT,
         invoice_id              integer,
         pay_date                date NOT NULL,
         amount          decimal(10,4) NOT NULL,
