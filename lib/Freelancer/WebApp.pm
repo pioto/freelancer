@@ -208,10 +208,12 @@ sub do_add_customer {
             my %args;
             $args{$_} = $q->param($_) foreach (qw(first_name last_name
                 cust_since email phone street_address state zip company));
-            Freelancer::Customer->new(
+            my $customer = Freelancer::Customer->new(
                 user => $user,
                 %args,
             );
+
+            return $self->redirect($q->url.'/customer?cust_id='.$customer->id);
         } catch ($e) {
             $error = $e;
         }
@@ -264,6 +266,8 @@ sub do_add_service {
                 user => $user,
                 %args,
             );
+
+            return $self->redirect($q->url.'/services');
         } catch ($e) {
             $error = $e;
         }
@@ -278,7 +282,7 @@ sub do_given_service {
 
     # Login Required
     my $user;
-    if ($user = $self->session->>param('user')) {
+    if ($user = $self->session->param('user')) {
         return $self->redirect($q->url.'/login');
     }
 
@@ -301,6 +305,8 @@ sub do_given_service {
                 date => $q->param('date'),
                 amount => $q->param('amount'),
             );
+
+            return $self->redirect($q->url.'/customer?cust_id='.$customer->id);
         }
     } catch ($e) {
         $error = $e;
