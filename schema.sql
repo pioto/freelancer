@@ -49,7 +49,7 @@ CREATE TABLE Given_Services (
         amount          integer NOT NULL,
         invoice_id              integer,
 
-        CHECK (amount > 0),
+        CHECK (amount != 0),
 
         PRIMARY KEY (serv_id, cust_id, date),
         FOREIGN KEY (serv_id) REFERENCES Services
