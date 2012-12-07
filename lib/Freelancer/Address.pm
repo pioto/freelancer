@@ -115,6 +115,51 @@ sub new {
     return $self;
 }
 
+=head2 load
+
+Load an existing address. Takes the following parameters:
+
+=over
+
+=item id
+
+=back
+
+=cut
+
+sub load {
+    my $class = shift;
+    my %args = @_;
+
+    my $fdbi = Freelancer::DBI->new();
+    # fetch the address from the database:
+    my $addr_info;
+    try {
+        my $sth = $fdbi->sql_get_address();
+        $sth->execute($args{id});
+        $addr_info = $sth->fetchrow_hashref('NAME_lc');
+        unless ($addr_info) {
+            Freelancer::Address::Error::NotFound(
+                error => 'Address not found',
+                id => $args{id},
+            );
+        }
+        if ($sth->fetch()) {
+            # something else matched??
+            Freelancer::Address::Error->throw("Duplicates for $args{id}?");
+        }
+    } catch (Freelancer::Address::Error $e) {
+        die $e;
+    } catch ($e) {
+        die $e;
+    }
+
+    my %o;
+    $o{$_} = $addr_info->{$_} foreach (@OBJ_ATTRS);
+    my $self = bless \%o, $class;
+    return $self;
+}
+
 =head1 OBJECT METHODS
 
 These object methods are provided:

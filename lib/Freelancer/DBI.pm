@@ -125,6 +125,17 @@ INSERT INTO Addresses
 VALUES (?, ?, ?, ?, ?, ?)
 END
 
+=head2 get_address
+
+Given an addr_id, returns all information about the corresponding
+address.
+
+=cut
+
+__PACKAGE__->set_sql('get_address', <<"END", 'freelancer');
+SELECT * FROM Addresses WHERE addr_id = ?
+END
+
 
 #### ^^^^ INSERT MORE QUERIES HERE ^^^^ ####
 
