@@ -5,6 +5,8 @@
 [% END %]
 
         <form method="POST" action="">
+            <input type="hidden" name="cust_id" value="[% customer.id %]">
+
             <dl>
                 <dt><label for="issue_date">Issue Date:</label></dt>
                 <dd><input type="date" id="issue_date" name="issue_date"></dd>
