@@ -1,7 +1,7 @@
 <pre>
-[% user.address.addr1 %][% IF user.address.addr2 %]
-[% user.address.addr2 %]
+[% address.addr1 %][% IF address.addr2 %]
+[% address.addr2 %]
 [% END %]
-[% user.address.city %], [% user.address.state %] [% user.address.zip %]
-[% user.address.country_code %]
+[% address.city %], [% address.state %] [% address.zip %]
+[% address.country_code %]
 </pre>
