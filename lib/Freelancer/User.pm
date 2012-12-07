@@ -81,7 +81,7 @@ These class methods are provided:
 =head2 new
 
 Create a new Freelancer::User. The parameters will be checked for
-consistency and validty, and then stored in the database. The following
+consistency and validity, and then stored in the database. The following
 parameters are required:
 
 =over
