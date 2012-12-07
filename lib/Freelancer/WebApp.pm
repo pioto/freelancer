@@ -291,7 +291,7 @@ sub do_given_service {
 
     # Login Required
     my $user;
-    if ($user = $self->session->param('user')) {
+    unless ($user = $self->session->param('user')) {
         return $self->redirect($q->url.'/login');
     }
 
@@ -333,7 +333,7 @@ sub do_create_invoice {
 
     # Login Required
     my $user;
-    if ($user = $self->session->param('user')) {
+    unless ($user = $self->session->param('user')) {
         return $self->redirect($q->url.'/login');
     }
 
@@ -375,7 +375,7 @@ sub do_invoices {
 
     # Login Required
     my $user;
-    if ($user = $self->session->param('user')) {
+    unless ($user = $self->session->param('user')) {
         return $self->redirect($q->url.'/login');
     }
 
@@ -407,7 +407,7 @@ sub do_invoice {
 
     # Login Required
     my $user;
-    if ($user = $self->session->param('user')) {
+    unless ($user = $self->session->param('user')) {
         return $self->redirect($q->url.'/login');
     }
 
@@ -441,7 +441,7 @@ sub do_add_payment {
 
     # Login Required
     my $user;
-    if ($user = $self->session->param('user')) {
+    unless ($user = $self->session->param('user')) {
         return $self->redirect($q->url.'/login');
     }
 
