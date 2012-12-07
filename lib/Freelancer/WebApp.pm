@@ -394,7 +394,7 @@ sub do_invoices {
     $self->tt_process('invoices', {
             error => $error,
             customer => $customer,
-            invoice => $invoice,
+            invoices => $invoices,
         });
 }
 
