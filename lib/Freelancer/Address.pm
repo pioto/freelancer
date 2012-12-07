@@ -139,7 +139,7 @@ sub load {
         $sth->execute($args{id});
         $addr_info = $sth->fetchrow_hashref('NAME_lc');
         unless ($addr_info) {
-            Freelancer::Address::Error::NotFound(
+            Freelancer::Address::Error::NotFound->throw(
                 error => 'Address not found',
                 id => $args{id},
             );
