@@ -344,7 +344,7 @@ sub do_create_invoice {
         if ($q->param('create_invoice')) {
             my $invoice = Freelancer::Invoice->new(
                 user => $user,
-                #customer => $customer,
+                customer => $customer,
                 issue_date => $q->param('issue_date'),
                 due_date => $q->param('due_date'),
                 #status => $q->param('status'),
