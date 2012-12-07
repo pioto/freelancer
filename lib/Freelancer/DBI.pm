@@ -136,6 +136,27 @@ __PACKAGE__->set_sql('get_address', <<"END", 'freelancer');
 SELECT * FROM Addresses WHERE addr_id = ?
 END
 
+# TODO: docs
+__PACKAGE__->set_sql('max_cust_id', <<"END", 'freelancer');
+SELECT MAX(cust_id) FROM Customers;
+END
+
+# TODO: docs
+__PACKAGE__->set_sql('insert_customer', <<"END", 'freelancer');
+INSERT INTO Customers
+  (cust_id, user_id, first_name, last_name, cust_since, email, phone, company, addr_id)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+END
+
+# TODO: docs
+__PACKAGE__->set_sql('list_customers', <<"END", 'freelancer');
+SELECT * FROM Customers WHERE user_id = ?
+END
+
+# TODO: docs
+__PACKAGE__->set_sql('load_customer', <<"END", 'freelancer');
+SELECT * FROM Customers WHERE user_id = ? AND cust_id = ?
+END
 
 #### ^^^^ INSERT MORE QUERIES HERE ^^^^ ####
 
