@@ -19,26 +19,29 @@ CREATE TABLE Users (
         email           varchar(100) UNIQUE,
         biz_name        varchar(30),
         biz_desc        varchar(250),
-        addr_id integer REFERENCES Addresses (addr_id)
+        addr_id integer,
+
+        FOREIGN KEY (addr_id) REFERENCES Addresses (addr_id)
+            on delete CASCADE on update CASCADE
 );
 
-
 CREATE TABLE Customers (
-        cust_id                 integer AUTOINCREMENT,
-        first_name              varchar(30) NOT NULL,
-        last_name               varchar(30) NOT NULL,
-        user_id                 integer,
-        cust_since              date NOT NULL,
-        email                   varchar(20) NOT NULL,
-        phone                   varchar(30) NOT NULL,
-        street_address  varchar(250) NOT NULL,
-        state                   char(15) NOT NULL,
-        zip                             integer NOT NULL,
-        company                 varchar(250),
+    cust_id integer,
+    user_id integer,
+    first_name varchar(30) NOT NULL,
+    last_name varchar(30) NOT NULL,
+    cust_since date NOT NULL,
+    email varchar(20) NOT NULL,
+    phone varchar(30) NOT NULL,
+    company varchar(250),
+    addr_id integer,
 
-        PRIMARY KEY (cust_id, user_id),
-        FOREIGN KEY (user_id) REFERENCES Users
-                on delete CASCADE on update CASCADE );
+    PRIMARY KEY (cust_id, user_id),
+    FOREIGN KEY (user_id) REFERENCES Users (user_id)
+        ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (addr_id) REFERENCES Addresses (addr_id)
+        ON DELETE CASCADE ON UPDATE CASCADE
+);
 
 CREATE TABLE Services (
         serv_id                 integer AUTOINCREMENT,
