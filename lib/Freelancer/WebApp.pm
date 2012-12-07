@@ -113,11 +113,14 @@ sub do_user {
     my $q = $self->query;
 
     # Login Required
-    unless ($self->session->param('user')) {
+    my $user;
+    unless ($user = $self->session->param('user')) {
         return $self->redirect($q->url.'/login');
     }
 
-    $self->tt_process('user');
+    $self->tt_process('user', {
+            user => $user,
+        });
 }
 
 sub do_change_password {

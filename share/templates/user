@@ -1,5 +1,7 @@
 [% INCLUDE header title = 'User Settings' %]
 
+        [% INCLUDE print_address address = user.address %]
+
         <ul>
           <li><a href="[% c.query.url %]/change_password">Change Password</a></li>
         </ul>
