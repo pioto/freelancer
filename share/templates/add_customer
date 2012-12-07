@@ -16,14 +16,10 @@
                 <dd><input type="email" id="email" name="email"></dd>
                 <dt><label for="phone">Phone:</label></dt>
                 <dd><input type="tel" id="phone" name="phone"></dd>
-                <dt><label for="street_address">Street Address:</label></dt>
-                <dd><input type="text" id="street_address" name="street_address"></dd>
-                <dt><label for="state">State:</label></dt>
-                <dd><input type="text" id="state" name="state"></dd>
-                <dt><label for="zip">ZIP Code:</label></dt>
-                <dd><input type="number" id="zip" name="zip"></dd>
                 <dt><label for="company">Company:</label></dt>
                 <dd><input type="text" id="company" name="company"></dd>
+
+                [% INCLUDE address_form %]
             </dl>
 
             <input type="submit" name="add_customer" value="Add Customer">

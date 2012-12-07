@@ -1,6 +1,12 @@
 [% INCLUDE header title = 'Customer' %]
 
+[% IF error %]
+        <p class="error">[% error %]</p>
+[% END %]
+
         <h2>[% INCLUDE customer_name customer = customer %]</h2>
+
+[% INCLUDE print_address address = customer.address %]
 
         <ul>
             <li><a href="[% c.query.url %]/given_service?cust_id=[% customer.id %]">Record Service for Customer</a></li>

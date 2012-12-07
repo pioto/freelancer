@@ -14,7 +14,9 @@ use CGI::Application::Plugin::Redirect;
 use CGI::Application::Plugin::Session;
 use CGI::Application::Plugin::TT;
 
+use Freelancer::Address;
 use Freelancer::User;
+use Freelancer::Customer;
 
 my $BASE_DIR = dist_dir('Freelancer');
 
@@ -214,12 +216,20 @@ sub do_add_customer {
     my $error;
     if ($q->param('add_customer')) {
         try {
-            my %args;
-            $args{$_} = $q->param($_) foreach (qw(first_name last_name
-                cust_since email phone street_address state zip company));
+            my %addr_args;
+            $addr_args{$_} = $q->param($_) foreach (qw(addr1 addr2 city
+                state zip country_code));
+            my $addr = Freelancer::Address->new(
+                %addr_args,
+            );
+
+            my %cust_args;
+            $cust_args{$_} = $q->param($_) foreach (qw(first_name last_name
+                cust_since email phone company));
             my $customer = Freelancer::Customer->new(
                 user => $user,
-                %args,
+                address => $addr,
+                %cust_args,
             );
 
             return $self->redirect($q->url.'/customer?cust_id='.$customer->id);

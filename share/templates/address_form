@@ -1,0 +1,12 @@
+                <dt><label for="addr1">Street Address (1/2):</label></dt>
+                <dd><input type="text" id="addr1" name="addr1"></dd>
+                <dt><label for="addr2">Street Address (2/2):</label></dt>
+                <dd><input type="text" id="addr2" name="addr2"></dd>
+                <dt><label for="city">City:</label></dt>
+                <dd><input type="text" id="city" name="city"></dd>
+                <dt><label for="state">State:</label></dt>
+                <dd><input type="text" id="state" name="state"></dd>
+                <dt><label for="zip">ZIP Code:</label></dt>
+                <dd><input type="number" id="zip" name="zip"></dd>
+                <dt><label for="country_code">Country Code:</label></dt>
+                <dd><input type="text" id="country_code" name="country_code"></dd>
