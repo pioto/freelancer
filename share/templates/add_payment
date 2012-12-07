@@ -1,0 +1,29 @@
+[% INCLUDE header title = 'Invoice' %]
+
+[% IF error %]
+        <p class="error">[% error %]</p>
+[% END %]
+
+        <form method="POST" action="">
+            <input type="hidden" name="cust_id" value="[% customer.id %]">
+            <input type="hidden" name="invoice_id" value="[% invoice.id %]">
+
+            <dl>
+                <dt><label for="pay_date">Payment Date:</label></dt>
+                <dd><input type="date" id="pay_date" name="pay_date"></dd>
+                <dt><label for="amount">Payment Amount:</label></dt>
+                <dd>$<input type="number" id="amount" name="amount"></dd>
+                <dt><label for="method">Payment Method:</label></dt>
+                <dd>
+                    <select id="method" name="method">
+                        <option value="cash">Cash</option>
+                        <option value="check">Check</option>
+                        <option value="credit_card">Credit Card</option>
+                    </select>
+                </dd>
+            </dl>
+
+            <input type="submit" name="add_payment" value="Add Payment">
+        </form>
+
+[% INCLUDE footer %]

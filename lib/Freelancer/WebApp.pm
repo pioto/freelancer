@@ -49,6 +49,8 @@ sub setup {
         'create_invoice' => 'do_create_invoice',
         'invoices' => 'do_invoices',
         'invoice' => 'do_invoice',
+
+        'add_payument' => 'do_add_payment',
     );
 }
 
@@ -427,5 +429,52 @@ sub do_invoice {
             error => $error,
             customer => $customer,
             invoice => $invoice,
+        });
+}
+
+sub do_add_payment {
+    my $self = shift;
+    my $q = $self->query;
+
+    # Login Required
+    my $user;
+    if ($user = $self->session->param('user')) {
+        return $self->redirect($q->url.'/login');
+    }
+
+    # need to be given a customer to do this for, too
+    my $error;
+    my ($customer, $invoice);
+    try {
+        $customer = Freelancer::Customer->load(
+            user => $user,
+            id => $q->param('cust_id'),
+        );
+        $invoice = Freelancer::Invoice->load(
+            user => $user,
+            customer => $customer,
+            id => $q->param('invoice_id'),
+        );
+
+        if ($q->param('add_payment')) {
+            my $payment = Freelancer::Payment->new(
+                user => $user,
+                customer => $customer,
+                invoice => $invoice,
+                pay_date => $q->param('pay_date'),
+                amount => $q->param('amount'),
+                method => $q->param('method'),
+            );
+
+            return $self->redirect($q->url.'/invoice?cust_id='.$customer->id
+                .'&invoice_id='.$invoice->id);
+        }
+    } catch ($e) {
+        $error = $e;
+    }
+
+    $self->tt_process('add_payment', {
+            error => $error,
+            customer => $customer,
         });
 }
