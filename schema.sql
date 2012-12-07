@@ -1,5 +1,15 @@
 -- Schema for the Freelancer project:
 
+CREATE TABLE Addresses (
+    addr_id integer PRIMARY KEY AUTOINCREMENT,
+    addr1 varchar(250) NOT NULL,
+    addr2 varchar(250),
+    city varchar(100) NOT NULL,
+    state varchar(25) NOT NULL,
+    zip varchar(10) NOT NULL,
+    country_code varchar(3)
+);
+
 CREATE TABLE Users (
         user_id integer PRIMARY KEY AUTOINCREMENT,
         first_name      varchar(30) NOT NULL,
@@ -9,7 +19,7 @@ CREATE TABLE Users (
         email           varchar(100) UNIQUE,
         biz_name        varchar(30),
         biz_desc        varchar(250),
-        address         varchar(100) NOT NULL
+        addr_id integer REFERENCES Addresses (addr_id)
 );
 
 

@@ -61,7 +61,7 @@ these parameters, in order:
 
 =item phone
 
-=item address
+=item addr_id
 
 =item password
 
@@ -71,7 +71,7 @@ these parameters, in order:
 
 __PACKAGE__->set_sql('insert_user', <<"END", 'freelancer');
 INSERT INTO Users
-  (email, first_name, last_name, biz_name, biz_desc, phone, address, password)
+  (email, first_name, last_name, biz_name, biz_desc, phone, addr_id, password)
 VALUES (?, ?, ?, ?, ?, ?, ?, ?)
 END
 
@@ -95,6 +95,36 @@ that user_id.
 __PACKAGE__->set_sql('set_pw_crypt', <<"END", 'freelancer');
 UPDATE Users SET password = ? WHERE user_id = ?
 END
+
+=head2 insert_address
+
+Given all information for a address, insert it into the database. Takes
+these parameters, in order:
+
+=over
+
+=item addr1
+
+=item addr2
+
+=item city
+
+=item state
+
+=item zip
+
+=item country_code
+
+=back
+
+=cut
+
+__PACKAGE__->set_sql('insert_address', <<"END", 'freelancer');
+INSERT INTO Addresses
+  (addr1, addr2, city, state, zip, country_code)
+VALUES (?, ?, ?, ?, ?, ?)
+END
+
 
 #### ^^^^ INSERT MORE QUERIES HERE ^^^^ ####
 

@@ -22,6 +22,7 @@ use Term::Prompt qw(prompt);
 use YAML qw(LoadFile);
 
 use Freelancer::DBI;
+use Freelancer::Address;
 use Freelancer::User;
 
 my %O;
@@ -35,7 +36,7 @@ my $conf = LoadFile($config_file);
 Freelancer::DBI->configure(%{$conf->{db}});
 
 # get params for new user
-my %new_args;
+my (%new_args, %new_addr_args);
 
 $new_args{email} = prompt('x', 'Email:', '', '');
 $new_args{first_name} = prompt('x', 'First Name:', '', '');
@@ -43,10 +44,22 @@ $new_args{last_name} = prompt('x', 'Last Name:', '', '');
 $new_args{biz_name} = prompt('X', 'Business Name:', '', '') || undef;
 $new_args{biz_desc} = prompt('X', 'Business Description:', '', '') || undef;
 $new_args{phone} = prompt('x', 'Phone Number:', '', '');
-$new_args{address} = prompt('x', 'Address:', '', '');
+
+$new_addr_args{addr1} = prompt('x', 'Street Address (1/2):', '', '');
+$new_addr_args{addr2} = prompt('X', 'Street Address (2/2):', '', '');
+$new_addr_args{city} = prompt('x', 'City:', '', '');
+$new_addr_args{state} = prompt('x', 'State:', '', '');
+$new_addr_args{zip} = prompt('x', 'ZIP:', '', '');
+$new_addr_args{country_code} = prompt('x', 'Country Code:', '', 'USA');
+
 $new_args{password} = prompt('p', 'Password:', '', '');
 
 print "\n\n";
+
+my $new_addr = Freelancer::Address->new(
+    %new_addr_args,
+);
+$new_args{address} = $new_addr,
 
 my $new_user = Freelancer::User->new(
     %new_args,

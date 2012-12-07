@@ -21,7 +21,7 @@ Freelancer::User - A user of the "Freelancer" system.
       biz_desc => "Bob's Bots is the best buyer of robots in"
           ." Western Pennsylvania",
       phone => '412-555-1234',
-      address => "123 Main St.\nPittsburgh, PA 15203",
+      address => $address, # Freelancer::Address object
   );
 
   # attempt to authenticate as an existing user (log in)
@@ -53,6 +53,8 @@ our $VERSION = '0.1';
 
 use Freelancer::DBI;
 
+use Freelancer::Address;
+
 use Exception::Class (
     'Freelancer::User::Error' => {},
 
@@ -70,7 +72,7 @@ use constant BLOWFISH_COST => 8;
 
 # all the attributes we should keep in a new object
 my @OBJ_ATTRS = qw(user_id email first_name last_name biz_name
-biz_desc phone address);
+biz_desc phone addr_id);
 
 =head1 CLASS METHODS
 
@@ -116,7 +118,7 @@ The user's business' phone number.
 
 =item address
 
-The user's business' mailing address.
+The user's business' mailing address. ISA Freelancer::Address.
 
 =back
 
@@ -127,13 +129,12 @@ sub new {
     my %args = @_;
 
     my $self = bless \%args, $class;
-    $self->{password} = $self->_hash_password($self->{password});
 
     my $fdbi = Freelancer::DBI->new();
     try {
         my $sth = $fdbi->sql_insert_user();
         $sth->execute(@{$self}{qw(email first_name last_name biz_name
-            biz_desc phone address password)});
+            biz_desc phone)}, $self->{address}->id, $self->_hash_password(delete $self->{password}));
 
         $self->{user_id} = $fdbi->db_freelancer()->last_insert_id(undef, undef, undef, undef);
 
@@ -267,11 +268,11 @@ sub phone { $_[0]{phone} }
 
 =head2 address
 
-Return the user's business' mailing address.
+Return the user's business' mailing address. ISA Freelancer::Address
 
 =cut
 
-sub address { $_[0]{address} }
+sub address { $_[0]{address} ||= Freelancer::Address->load(id => $_[0]{addr_id}) }
 
 =head2 change_password
 
