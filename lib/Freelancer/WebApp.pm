@@ -45,6 +45,10 @@ sub setup {
         'add_service' => 'do_add_service',
 
         'given_service' => 'do_given_service',
+
+        'create_invoice' => 'do_create_invoice',
+        'invoices' => 'do_invoices',
+        'invoice' => 'do_invoice',
     );
 }
 
@@ -315,5 +319,113 @@ sub do_given_service {
     $self->tt_process('given_service', {
             error => $error,
             customer => $customer,
+        });
+}
+
+sub do_create_invoice {
+    my $self = shift;
+    my $q = $self->query;
+
+    # Login Required
+    my $user;
+    if ($user = $self->session->param('user')) {
+        return $self->redirect($q->url.'/login');
+    }
+
+    # need to be given a customer to do this for, too
+    my $error;
+    my $customer;
+    try {
+        $customer = Freelancer::Customer->load(
+            user => $user,
+            id => $q->param('cust_id'),
+        );
+
+        if ($q->param('create_invoice')) {
+            my $invoice = Freelancer::Invoice->new(
+                user => $user,
+                #customer => $customer,
+                issue_date => $q->param('issue_date'),
+                due_date => $q->param('due_date'),
+                #status => $q->param('status'),
+                status => 'new',
+            );
+
+            return $self->redirect($q->url.'/invoice?cust_id='.$customer->id
+                .'&invoice_id='.$invoice->id);
+        }
+    } catch ($e) {
+        $error = $e;
+    }
+
+    $self->tt_process('create_invoice', {
+            error => $error,
+            customer => $customer,
+        });
+}
+
+sub do_invoices {
+    my $self = shift;
+    my $q = $self->query;
+
+    # Login Required
+    my $user;
+    if ($user = $self->session->param('user')) {
+        return $self->redirect($q->url.'/login');
+    }
+
+    my $error;
+    my ($customer, $invoices);
+    try {
+        $customer = Freelancer::Customer->load(
+            user => $user,
+            id => $q->param('cust_id'),
+        );
+        $invoices = Freelancer::Invoice->list(
+            user => $user,
+            customer => $customer,
+        );
+    } catch ($e) {
+        $error = $e;
+    }
+
+    $self->tt_process('invoices', {
+            error => $error,
+            customer => $customer,
+            invoice => $invoice,
+        });
+}
+
+sub do_invoice {
+    my $self = shift;
+    my $q = $self->query;
+
+    # Login Required
+    my $user;
+    if ($user = $self->session->param('user')) {
+        return $self->redirect($q->url.'/login');
+    }
+
+    # need to be given a customer to do this for, too
+    my $error;
+    my ($customer, $invoice);
+    try {
+        $customer = Freelancer::Customer->load(
+            user => $user,
+            id => $q->param('cust_id'),
+        );
+        $invoice = Freelancer::Invoice->load(
+            user => $user,
+            customer => $customer,
+            id => $q->param('invoice_id'),
+        );
+    } catch ($e) {
+        $error = $e;
+    }
+
+    $self->tt_process('invoice', {
+            error => $error,
+            customer => $customer,
+            invoice => $invoice,
         });
 }

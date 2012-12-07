@@ -1,0 +1,19 @@
+[% INCLUDE header title = 'Invoice' %]
+
+[% IF error %]
+        <p class="error">[% error %]</p>
+[% END %]
+
+        <table border="1">
+            <tr><th>Issue Date:</th><td>[% invoice.issue_date |html %]</td></tr>
+            <tr><th>Due Date:</th><td>[% invoice.due_date |html %]</td></tr>
+            <tr><th>Status:</th><td>[% invoice.status |html %]</td></tr>
+        </table>
+
+        <ul>
+            <li>
+                <a href="[% c.query.url %]/add_payment?invoice_id=[% invoice.id %]&cust_id=[% customer.id %]">Add Payment</a>
+            </li>
+        </ul>
+
+[% INCLUDE footer %]

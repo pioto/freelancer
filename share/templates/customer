@@ -1,14 +1,10 @@
 [% INCLUDE header title = 'Customer' %]
 
-        <h2>
-            [% customer.first_name %] [% customer.last_name %]
-            [% IF customer.company %]
-            ([% customer.company %])
-            [% END %]
-        </h2>
+        <h2>[% INCLUDE customer_name customer = customer %]</h2>
 
         <ul>
             <li><a href="[% c.query.url %]/given_service?cust_id=[% customer.id %]">Record Service for Customer</a></li>
+            <li><a href="[% c.query.url %]/invoices?cust_id=[% customer.id %]">Invoices</a></li>
         </ul>
 
 [% INCLUDE footer %]

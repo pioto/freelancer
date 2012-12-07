@@ -1,0 +1,18 @@
+[% INCLUDE header title = 'Create Invoice' %]
+
+[% IF error %]
+        <p class="error">[% error %]</p>
+[% END %]
+
+        <form method="POST" action="">
+            <dl>
+                <dt><label for="issue_date">Issue Date:</label></dt>
+                <dd><input type="date" id="issue_date" name="issue_date"></dd>
+                <dt><label for="due_date">Due Date:</label></dt>
+                <dd><input type="date" id="due_date" name="due_date"><dd>
+            </dl>
+
+            <input type="submit" name="create_invoice" value="Create Invoice">
+        </form>
+
+[% INCLUDE footer %]

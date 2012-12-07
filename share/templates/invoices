@@ -1,0 +1,28 @@
+[% INCLUDE header title = 'Invoices' %]
+
+        <h2>[% INCLUDE customer_name customer = customer %]</h2>
+
+        <ul>
+            <li><a href="[% c.query.url %]/create_invoice?cust_id=[% customer.id %]">Create Invoice</a></li>
+        </ul>
+
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Issue Date</th>
+                    <th>Due Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+            [% FOREACH invoice = invoices %]
+                <tr>
+                    <td>[% invoice.issue_date |html %]</td>
+                    <td>[% invoice.due_date |html %]</td>
+                    <td><a href="[% c.query.url %]/invoice?cust_id=[% customer.id %]&invoice_id=[% invoice.id %]">[% invoice.state |html %]</a></td>
+                </tr>
+            [% END %]
+            </tbody>
+        </table>
+
+[% INCLUDE footer %]

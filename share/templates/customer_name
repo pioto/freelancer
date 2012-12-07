@@ -1,0 +1,4 @@
+[% customer.first_name %] [% customer.last_name %]
+[% IF customer.company %]
+([% customer.company %])
+[% END %]
