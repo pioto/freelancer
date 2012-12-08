@@ -254,6 +254,14 @@ GROUP BY serv_id
 ORDER BY amt DESC
 END
 
+__PACKAGE__->set_sql('sales_by_zip', <<"END", 'freelancer');
+SELECT zip, SUM(price_perunit * amount) sales
+  FROM (Customers JOIN Addresses USING (addr_id)) NATURAL JOIN (Given_Services NATURAL JOIN Services)
+  WHERE Customers.user_id = ?
+  GROUP BY zip
+  ORDER BY sales DESC;
+END
+
 #### ^^^^ INSERT MORE QUERIES HERE ^^^^ ####
 
 #### INTERNAL GOO ####

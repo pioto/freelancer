@@ -26,4 +26,23 @@ sub best_selling_services {
     return \@r;
 }
 
+sub sales_by_zip {
+    my $class = shift;
+    my %args = @_;
+
+    my $fdbi = Freelancer::DBI->new;
+    my $sth = $fbi->sales_by_zip;
+    $sth->execute($args{user}->id);
+
+    my @r;
+    while (my ($zip, $sales) = $sth->fetch()) {
+        push @r, {
+            zip => $zip,
+            sales => $sales,
+        };
+    }
+
+    return \@r;
+}
+
 1;
