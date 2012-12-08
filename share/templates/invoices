@@ -19,7 +19,7 @@
                 <tr>
                     <td>[% invoice.issue_date |html %]</td>
                     <td>[% invoice.due_date |html %]</td>
-                    <td><a href="[% c.query.url %]/invoice?cust_id=[% customer.id %]&invoice_id=[% invoice.id %]">[% invoice.state |html %]</a></td>
+                    <td><a href="[% c.query.url %]/invoice?cust_id=[% customer.id %]&invoice_id=[% invoice.id %]">[% invoice.status |html %]</a></td>
                 </tr>
             [% END %]
             </tbody>

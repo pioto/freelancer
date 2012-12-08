@@ -1,0 +1,33 @@
+[% INCLUDE header title = 'Add Charges' %]
+
+[% IF error %]
+        <p class="error">[% error %]</p>
+[% END %]
+
+        <form method="POST" action="">
+            <input type="hidden" name="cust_id" value="[% customer.id %]">
+            <input type="hidden" name="invoice_id" value="[% invoice.id %]">
+
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>&nbsp;</th>
+                        <th>Service</th>
+                        <th>Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    [% FOREACH given_service = given_services %]
+                    <tr>
+                        <td><input type="checkbox" name="serv_date" value="[% given_service.serv_id %]|[% given_service.date %]"></td>
+                        <td>[% given_service.service.serv_name |html %]</td>
+                        <td>[% given_service.amount |html %]</td>
+                    </tr>
+                    [% END %]
+                </tbody>
+            </table>
+
+            <input type="submit" name="add_charges" value="Add Selected Charges">
+        </form>
+
+[% INCLUDE footer %]

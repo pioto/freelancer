@@ -5,15 +5,48 @@
 [% END %]
 
         <table border="1">
+            <tr><th>Customer:</th><td>[% INCLUDE customer_name customer = customer %]</td></tr>
+            <tr><th>Invoice ID:</th><td>[% customer.id |html %]-[% invoice.id |html %]</td></tr>
             <tr><th>Issue Date:</th><td>[% invoice.issue_date |html %]</td></tr>
             <tr><th>Due Date:</th><td>[% invoice.due_date |html %]</td></tr>
             <tr><th>Status:</th><td>[% invoice.status |html %]</td></tr>
+            <tr><th>Amount Due:</th><td>[% invoice.amount_due FILTER format('$%.2f') %]</td></tr>
         </table>
 
         <ul>
             <li>
+                <a href="[% c.query.url %]/add_charges?invoice_id=[% invoice.id %]&cust_id=[% customer.id %]">Add Charges</a>
+            </li>
+            <li>
                 <a href="[% c.query.url %]/add_payment?invoice_id=[% invoice.id %]&cust_id=[% customer.id %]">Add Payment</a>
             </li>
         </ul>
+
+        [% IF given_services && given_services.size %]
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Service</th>
+                    <th>Quantity</th>
+                    <th>Per Unit</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                [% FOREACH given_service = given_services %]
+                <tr>
+                    <td>[% given_service.date |html %]</td>
+                    <td>[% given_service.service.serv_name |html %]</td>
+                    <td>[% given_service.amount |html %]</td>
+                    <td>[% given_service.service.price_perunit FILTER format('$%.2f') |html %]</td>
+                    <td>[% given_service.cost FILTER format('$%.2f') |html %]</td>
+                </tr>
+                [% END %]
+            </tbody>
+        </table>
+        [% ELSE %]
+        <p>No charges added yet.</p>
+        [% END %]
 
 [% INCLUDE footer %]

@@ -17,6 +17,7 @@ use CGI::Application::Plugin::TT;
 use Freelancer::Address;
 use Freelancer::Customer;
 use Freelancer::GivenService;
+use Freelancer::Invoice;
 use Freelancer::Service;
 use Freelancer::User;
 
@@ -54,7 +55,8 @@ sub setup {
         'invoices' => 'do_invoices',
         'invoice' => 'do_invoice',
 
-        'add_payument' => 'do_add_payment',
+        'add_charges' => 'do_add_charges',
+        'add_payment' => 'do_add_payment',
     );
 }
 
@@ -430,7 +432,7 @@ sub do_invoice {
 
     # need to be given a customer to do this for, too
     my $error;
-    my ($customer, $invoice);
+    my ($customer, $invoice, $given_services);
     try {
         $customer = Freelancer::Customer->load(
             user => $user,
@@ -441,6 +443,11 @@ sub do_invoice {
             customer => $customer,
             id => $q->param('invoice_id'),
         );
+        $given_services = Freelancer::GivenService->list(
+            customer => $customer,
+            invoice => $invoice,
+        );
+        use YAML; warn Dump($given_services);
     } catch ($e) {
         $error = $e;
     }
@@ -449,9 +456,64 @@ sub do_invoice {
             error => $error,
             customer => $customer,
             invoice => $invoice,
+            given_services => $given_services,
         });
 }
 
+sub do_add_charges {
+    my $self = shift;
+    my $q = $self->query;
+
+    # Login Required
+    my $user;
+    unless ($user = $self->session->param('user')) {
+        return $self->redirect($q->url.'/login');
+    }
+
+    # need to be given a customer to do this for, too
+    my $error;
+    my ($customer, $invoice, $given_services);
+    try {
+        $customer = Freelancer::Customer->load(
+            user => $user,
+            id => $q->param('cust_id'),
+        );
+        $invoice = Freelancer::Invoice->load(
+            user => $user,
+            customer => $customer,
+            id => $q->param('invoice_id'),
+        );
+        $given_services = Freelancer::GivenService->list(
+            customer => $customer,
+            uninvoiced => 1,
+        );
+
+        if ($q->param('add_charges')) {
+            foreach my $serv_date ($q->param('serv_date')) {
+                my ($serv_id, $date) = split /\|/, $serv_date, 2;
+                my $service = Freelancer::Service->load(id => $serv_id);
+                my $given_service = Freelancer::GivenService->load(
+                    service => $service,
+                    customer => $customer,
+                    date => $date,
+                );
+                $given_service->add_to_invoice(invoice => $invoice);
+            }
+
+            return $self->redirect($q->url.'/invoice?cust_id='.$customer->id
+                .'&invoice_id='.$invoice->id);
+        }
+    } catch ($e) {
+        $error = $e;
+    }
+
+    $self->tt_process('add_charges', {
+            error => $error,
+            customer => $customer,
+            invoice => $invoice,
+            given_services => $given_services,
+        });
+}
 sub do_add_payment {
     my $self = shift;
     my $q = $self->query;

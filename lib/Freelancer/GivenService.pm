@@ -21,8 +21,7 @@ use Exception::Class (
 );
 
 # all the attributes we should keep in a new object
-my @OBJ_ATTRS = qw(serv_id serv_name serv_desc user_id unit
-price_perunit);
+my @OBJ_ATTRS = qw(serv_id cust_id date amount invoice_id);
 
 # TODO: POD
 sub new {
@@ -60,8 +59,19 @@ sub list {
     my $fdbi = Freelancer::DBI->new();
     my @r;
     try {
-        my $sth = $fdbi->sql_list_given_services();
-        $sth->execute($args{customer}->id);
+        my $sth;
+        if (exists $args{invoice}) {
+            if (defined $args{invoice}) {
+                $sth = $fdbi->sql_list_invoice_given_services();
+                $sth->execute($args{customer}->id, $args{invoice}->id);
+            } else {
+                $sth = $fdbi->sql_list_uninvoiced_given_services();
+                $sth->execute($args{customer}->id);
+            }
+        } else {
+            $sth = $fdbi->sql_list_given_services();
+            $sth->execute($args{customer}->id);
+        }
 
         while (my $serv_info = $sth->fetchrow_hashref('NAME_lc')) {
             my $obj = $class->_load($serv_info);
@@ -123,6 +133,26 @@ sub _load {
 foreach my $attr (@OBJ_ATTRS) {
     no strict 'refs';
     *$attr = sub { $_[0]{$attr} };
+}
+
+sub add_to_invoice {
+    my $self = shift;
+    my %args = @_;
+
+    my $fdbi = Freelancer::DBI->new();
+    my $sth = $fdbi->sql_add_charge_to_invoice();
+    $sth->execute($args{invoice}->id, $self->{serv_id},
+        $self->{cust_id}, $self->{date});
+    $fdbi->commit();
+}
+
+sub service { Freelancer::Service->load(id => $_[0]{serv_id}) }
+
+sub cost {
+    my $self = shift;
+    my $service = $self->service();
+
+    return $service->price_perunit * $self->amount;
 }
 
 1;

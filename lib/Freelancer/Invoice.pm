@@ -21,7 +21,7 @@ use Exception::Class (
 );
 
 # all the attributes we should keep in a new object
-my @OBJ_ATTRS = qw(invoice_id user_id issue_date due_date status);
+my @OBJ_ATTRS = qw(invoice_id user_id cust_id issue_date due_date status);
 
 # TODO: POD
 sub new {
@@ -35,7 +35,7 @@ sub new {
         # add them to the db
         my $insert_sth = $fdbi->sql_insert_invoice();
         $insert_sth->execute(
-            $args{user}->id, @{$self}{qw(issue_date due_date status)}
+            $args{user}->id, $args{customer}->id, @{$self}{qw(issue_date due_date status)}
         );
 
         $self->{invoice_id} = $fdbi->db_freelancer()->last_insert_id(undef,
@@ -59,8 +59,16 @@ sub list {
     my $fdbi = Freelancer::DBI->new();
     my @r;
     try {
-        my $sth = $fdbi->sql_list_invoices();
-        $sth->execute($args{user}->id);
+        my $sth;
+        if ($args{user}) {
+            $sth = $fdbi->sql_list_user_invoices();
+            $sth->execute($args{user}->id);
+        } elsif ($args{customer}) {
+            $sth = $fdbi->sql_list_cust_invoices();
+            $sth->execute($args{customer}->id);
+        } else {
+            Freelancer::Invoice::Error->throw("Need to give either a user or customer to list for");
+        }
 
         while (my $serv_info = $sth->fetchrow_hashref('NAME_lc')) {
             my $obj = $class->_load($serv_info);
@@ -118,9 +126,29 @@ sub _load {
 }
 
 # TODO: POD
+sub id { $_[0]{invoice_id} }
+
+# TODO: POD
 foreach my $attr (@OBJ_ATTRS) {
     no strict 'refs';
     *$attr = sub { $_[0]{$attr} };
+}
+
+sub amount_due {
+    my $self = shift;
+    my $fdbi = Freelancer::DBI->new();
+
+    my $amt;
+    try {
+        my $sth = $fdbi->sql_invoice_amount_due();
+        $sth->execute($self->id);
+
+        ($amt) = $sth->fetch;
+    } catch ($e) {
+        die $e;
+    }
+
+    return $amt;
 }
 
 1;
