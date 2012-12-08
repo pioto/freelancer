@@ -2,6 +2,8 @@
 
        <p><a href="[% c.query.url %]/add_customer">Add a Customer</a></p>
 
+       <p><a href="[% c.query.url %]/sales_by_zip">Sales By ZIP Code</a></p>
+
 [% IF customers && customers.size %]
     <ul>
     [% FOREACH customer = customers %]

@@ -31,7 +31,7 @@ sub sales_by_zip {
     my %args = @_;
 
     my $fdbi = Freelancer::DBI->new;
-    my $sth = $fbi->sales_by_zip;
+    my $sth = $fdbi->sql_sales_by_zip;
     $sth->execute($args{user}->id);
 
     my @r;

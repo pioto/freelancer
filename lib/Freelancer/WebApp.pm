@@ -63,6 +63,7 @@ sub setup {
         'add_payment' => 'do_add_payment',
 
         'best_selling_services' => 'do_best_selling_services',
+        'sales_by_zip' => 'do_sales_by_zip',
     );
 }
 
@@ -630,5 +631,29 @@ sub do_best_selling_services {
     $self->tt_process('best_selling_services', {
             error => $error,
             best_selling_services => $best_selling_services,
+        });
+}
+
+sub do_sales_by_zip {
+    my $self = shift;
+    my $q = $self->query;
+
+    # Login Required
+    my $user;
+    unless ($user = $self->session->param('user')) {
+        return $self->redirect($q->url.'/login');
+    }
+
+    my $error;
+    my $sales_by_zip;
+    try {
+        $sales_by_zip = Freelancer::Reports->sales_by_zip(user => $user);
+    } catch ($e) {
+        $error = $e;
+    }
+
+    $self->tt_process('sales_by_zip', {
+            error => $error,
+            sales_by_zip => $sales_by_zip,
         });
 }

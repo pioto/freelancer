@@ -1,0 +1,22 @@
+[% INCLUDE header title = 'Services' %]
+
+[% IF error %]
+        <p class="error">[% error %]</p>
+[% END %]
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ZIP</th>
+                <th>Amount Sold</th>
+            </tr>
+        </thead>
+        <tbody>
+    [% FOREACH sale_zip = sales_by_zip %]
+            <tr>
+                <td>[% sale_zip.zip |html %]</td>
+                <td>[% sale_zip.sales FILTER format('$%.2f') |html %]</td>
+            </tr>
+    [% END %]
+        </tbody>
+    </table>
