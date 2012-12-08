@@ -415,7 +415,6 @@ sub do_invoices {
             id => $q->param('cust_id'),
         );
         $invoices = Freelancer::Invoice->list(
-            user => $user,
             customer => $customer,
         );
     } catch ($e) {
