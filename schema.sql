@@ -73,12 +73,16 @@ CREATE TABLE Given_Services (
 CREATE TABLE Invoices (
         invoice_id              integer PRIMARY KEY AUTOINCREMENT,
         user_id                 integer,
+        cust_id                 integer,
         issue_date              date NOT NULL,
         due_date                date NOT NULL,
         status                  varchar(15) NOT NULL,
 
         FOREIGN KEY (user_id) REFERENCES Users
+                on delete CASCADE on update CASCADE,
+        FOREIGN KEY (cust_id) REFERENCES Customers
                 on delete CASCADE on update CASCADE );
+
 
 CREATE TABLE Payments (
         payment_num     integer PRIMARY KEY AUTOINCREMENT,
