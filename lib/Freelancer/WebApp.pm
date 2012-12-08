@@ -15,8 +15,9 @@ use CGI::Application::Plugin::Session;
 use CGI::Application::Plugin::TT;
 
 use Freelancer::Address;
-use Freelancer::User;
 use Freelancer::Customer;
+use Freelancer::Service;
+use Freelancer::User;
 
 my $BASE_DIR = dist_dir('Freelancer');
 

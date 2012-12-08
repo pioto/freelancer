@@ -3,11 +3,26 @@
        <p><a href="[% c.query.url %]/add_service">Add a Service</a></p>
 
 [% IF services && services.size %]
-    <ul>
-    [% FOREACH service = services %]
-        <li>[% service %]</li>
-    [% END %]
-    </ul>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Unit</th>
+                <th>Price ($)</th>
+            </tr>
+        </thead>
+        <tbody>
+        [% FOREACH service = services %]
+            <tr>
+                <td>[% service.serv_name %]</td>
+                <td>[% service.serv_desc %]</td>
+                <td>[% service.unit %]</td>
+                <td>[% service.price_perunit %]</td>
+            </tr>
+        [% END %]
+        </tbody>
+    </table>
 [% ELSE %]
         <p>No services yet.</p>
 [% END %]
