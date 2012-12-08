@@ -485,7 +485,7 @@ sub do_add_charges {
         );
         $given_services = Freelancer::GivenService->list(
             customer => $customer,
-            uninvoiced => 1,
+            invoice => undef,
         );
 
         if ($q->param('add_charges')) {
@@ -514,6 +514,7 @@ sub do_add_charges {
             given_services => $given_services,
         });
 }
+
 sub do_add_payment {
     my $self = shift;
     my $q = $self->query;
