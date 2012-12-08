@@ -20,3 +20,5 @@
     [% END %]
         </tbody>
     </table>
+
+[% INCLUDE footer %]
