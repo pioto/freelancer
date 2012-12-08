@@ -12,7 +12,8 @@
                 <dt><label for="pay_date">Payment Date:</label></dt>
                 <dd><input type="date" id="pay_date" name="pay_date"></dd>
                 <dt><label for="amount">Payment Amount:</label></dt>
-                <dd>$<input type="number" id="amount" name="amount"></dd>
+                <dd>$<input type="number" step="any" min="0"  id="amount" name="amount">
+                    (total due: [% invoice.amount_due FILTER format('$%.2f') |html %])</dd>
                 <dt><label for="method">Payment Method:</label></dt>
                 <dd>
                     <select id="method" name="method">

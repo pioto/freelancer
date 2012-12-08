@@ -234,6 +234,20 @@ UPDATE Given_Services SET invoice_id = ?
   WHERE serv_id = ? AND cust_id = ? AND date = ?
 END
 
+__PACKAGE__->set_sql('insert_payment', <<"END", 'freelancer');
+INSERT INTO Payments
+  (invoice_id, pay_date, amount, method)
+VALUES (?, ?, ?, ?)
+END
+
+__PACKAGE__->set_sql('list_payments', <<"END", 'freelancer');
+SELECT * FROM Payments WHERE invoice_id = ?
+END
+
+__PACKAGE__->set_sql('load_payment', <<"END", 'freelancer');
+SELECT * FROM Payments WHERE payment_num = ?
+END
+
 #### ^^^^ INSERT MORE QUERIES HERE ^^^^ ####
 
 #### INTERNAL GOO ####

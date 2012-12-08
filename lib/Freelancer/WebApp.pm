@@ -18,6 +18,7 @@ use Freelancer::Address;
 use Freelancer::Customer;
 use Freelancer::GivenService;
 use Freelancer::Invoice;
+use Freelancer::Payment;
 use Freelancer::Service;
 use Freelancer::User;
 
@@ -559,5 +560,6 @@ sub do_add_payment {
     $self->tt_process('add_payment', {
             error => $error,
             customer => $customer,
+            invoice => $invoice,
         });
 }
