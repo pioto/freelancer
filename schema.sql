@@ -26,7 +26,7 @@ CREATE TABLE Users (
 );
 
 CREATE TABLE Customers (
-    cust_id integer,
+    cust_id integer PRIMARY KEY AUTOINCREMENT,
     user_id integer,
     first_name varchar(30) NOT NULL,
     last_name varchar(30) NOT NULL,
@@ -36,7 +36,6 @@ CREATE TABLE Customers (
     company varchar(250),
     addr_id integer,
 
-    PRIMARY KEY (cust_id, user_id),
     FOREIGN KEY (user_id) REFERENCES Users (user_id)
         ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (addr_id) REFERENCES Addresses (addr_id)
@@ -59,36 +58,34 @@ CREATE TABLE Given_Services (
         cust_id                 integer,
         date                    date NOT NULL,
         amount          integer NOT NULL,
-        invoice_id              integer,
+        invoice_id              integer NULL,
 
         CHECK (amount != 0),
 
         PRIMARY KEY (serv_id, cust_id, date),
-        FOREIGN KEY (serv_id) REFERENCES Services
-                on delete SET DEFAULT on update CASCADE,
-        FOREIGN KEY (cust_id) REFERENCES Customers
-                on delete SET DEFAULT on update CASCADE,
-        FOREIGN KEY (invoice_id) REFERENCES Invoices
+        FOREIGN KEY (serv_id) REFERENCES Services (serv_id)
+                on delete CASCADE on update CASCADE,
+        FOREIGN KEY (cust_id) REFERENCES Customers (cust_id)
+                on delete CASCADE on update CASCADE,
+        FOREIGN KEY (invoice_id) REFERENCES Invoices (invoice_id)
                 on delete SET NULL on update CASCADE );
 
 CREATE TABLE Invoices (
-        invoice_id              integer AUTOINCREMENT,
+        invoice_id              integer PRIMARY KEY AUTOINCREMENT,
         user_id                 integer,
         issue_date              date NOT NULL,
         due_date                date NOT NULL,
         status                  varchar(15) NOT NULL,
 
-        PRIMARY KEY (invoice_id, user_id),
         FOREIGN KEY (user_id) REFERENCES Users
                 on delete CASCADE on update CASCADE );
 
 CREATE TABLE Payments (
-        payment_num     integer AUTOINCREMENT,
+        payment_num     integer PRIMARY KEY AUTOINCREMENT,
         invoice_id              integer,
         pay_date                date NOT NULL,
         amount          decimal(10,4) NOT NULL,
         method          varchar(15) NOT NULL,
 
-        PRIMARY KEY (payment_num, invoice_id),
         FOREIGN KEY (invoice_id) REFERENCES Invoices
                 on delete SET DEFAULT on update CASCADE );
