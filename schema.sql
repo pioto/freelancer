@@ -44,14 +44,13 @@ CREATE TABLE Customers (
 );
 
 CREATE TABLE Services (
-        serv_id                 integer AUTOINCREMENT,
+        serv_id                 integer PRIMARY KEY AUTOINCREMENT,
         serv_name               varchar(30) NOT NULL,
         serv_desc               varchar(100) NOT NULL,
         user_id                 integer,
         unit                    varchar(50) NOT NULL,
         price_perunit   decimal(10,4) NOT NULL,
 
-        PRIMARY KEY (serv_id, user_id),
         FOREIGN KEY (user_id) REFERENCES Users
                 on delete CASCADE on update CASCADE  );
 

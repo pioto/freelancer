@@ -158,6 +158,23 @@ __PACKAGE__->set_sql('load_customer', <<"END", 'freelancer');
 SELECT * FROM Customers WHERE user_id = ? AND cust_id = ?
 END
 
+# TODO: docs
+__PACKAGE__->set_sql('insert_service', <<"END", 'freelancer');
+INSERT INTO Services
+  (user_id, serv_name, serv_desc, unit, price_perunit)
+VALUES (?, ?, ?, ?, ?)
+END
+
+# TODO: docs
+__PACKAGE__->set_sql('list_services', <<"END", 'freelancer');
+SELECT * FROM Services WHERE user_id = ?
+END
+
+# TODO: docs
+__PACKAGE__->set_sql('load_service', <<"END", 'freelancer');
+SELECT * FROM Services WHERE service_id = ?
+END
+
 #### ^^^^ INSERT MORE QUERIES HERE ^^^^ ####
 
 #### INTERNAL GOO ####
