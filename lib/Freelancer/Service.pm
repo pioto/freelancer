@@ -85,7 +85,7 @@ sub load {
     my $serv_info;
     try {
         my $sth = $fdbi->sql_load_service();
-        $sth->execute($args{user}->id, $args{id});
+        $sth->execute($args{id});
 
         $serv_info = $sth->fetchrow_hashref('NAME_lc');
         unless ($serv_info) {
