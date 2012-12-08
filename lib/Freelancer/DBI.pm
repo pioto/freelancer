@@ -137,15 +137,10 @@ SELECT * FROM Addresses WHERE addr_id = ?
 END
 
 # TODO: docs
-__PACKAGE__->set_sql('max_cust_id', <<"END", 'freelancer');
-SELECT MAX(cust_id) FROM Customers;
-END
-
-# TODO: docs
 __PACKAGE__->set_sql('insert_customer', <<"END", 'freelancer');
 INSERT INTO Customers
-  (cust_id, user_id, first_name, last_name, cust_since, email, phone, company, addr_id)
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+  (user_id, first_name, last_name, cust_since, email, phone, company, addr_id)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?)
 END
 
 # TODO: docs

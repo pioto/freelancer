@@ -108,7 +108,7 @@ sub new {
         # add them to the db
         my $insert_sth = $fdbi->sql_insert_customer();
         $insert_sth->execute(
-            $self->{cust_id}, $args{user}->id, @{$self}{qw(first_name last_name
+            $args{user}->id, @{$self}{qw(first_name last_name
             cust_since email phone company)}, $args{address}->id,
         );
 
