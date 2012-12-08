@@ -192,6 +192,23 @@ __PACKAGE__->set_sql('load_given_service', <<"END", 'freelancer');
 SELECT * FROM Given_Services WHERE serv_id = ? AND cust_id = ? AND date = ?
 END
 
+# TODO: docs
+__PACKAGE__->set_sql('insert_invoice', <<"END", 'freelancer');
+INSERT INTO Invoices
+  (user_id, issue_date, due_date, status)
+VALUES (?, ?, ?, ?)
+END
+
+# TODO: docs
+__PACKAGE__->set_sql('list_invoices', <<"END", 'freelancer');
+SELECT * FROM Invoices WHERE user_id = ?
+END
+
+# TODO: docs
+__PACKAGE__->set_sql('load_invoice', <<"END", 'freelancer');
+SELECT * FROM Invoices WHERE invoice_id = ?
+END
+
 #### ^^^^ INSERT MORE QUERIES HERE ^^^^ ####
 
 #### INTERNAL GOO ####
