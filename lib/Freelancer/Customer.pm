@@ -234,7 +234,7 @@ sub set_client_personal_info {
 
     my $fdbi = Freelancer::DBI->new;
     my $sth = $fdbi->sql_set_client_personal_info;
-    $sth->execute($self->id, $self->{user_id}, @{$args}{qw(family
+    $sth->execute($self->id, $self->{user_id}, @args{qw(family
         children birthday notes)});
 
     $fdbi->commit();
