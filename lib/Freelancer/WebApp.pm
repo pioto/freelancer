@@ -308,7 +308,7 @@ sub do_given_service {
 
     # need to be given a customer to do this for, too
     my $error;
-    my $customer;
+    my ($customer, $services);
     try {
         $customer = Freelancer::Customer->load(
             user => $user,
@@ -328,6 +328,10 @@ sub do_given_service {
 
             return $self->redirect($q->url.'/customer?cust_id='.$customer->id);
         }
+
+        $services = Freelancer::Service->list(
+            user => $user,
+        );
     } catch ($e) {
         $error = $e;
     }
@@ -335,6 +339,7 @@ sub do_given_service {
     $self->tt_process('given_service', {
             error => $error,
             customer => $customer,
+            services => $services,
         });
 }
 

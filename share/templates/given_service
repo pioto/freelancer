@@ -11,7 +11,7 @@
                 <dd>
                     <select id="serv_id" name="serv_id">
                         [% FOREACH service = services %]
-                        <option value="[% service.id %]">[% service.name %] ([% service.unit %])</option>
+                        <option value="[% service.id %]">[% service.serv_name %] ([% service.unit %]) $[% service.price_perunit %]</option>
                         [% END %]
                     </select>
                 </dd>
