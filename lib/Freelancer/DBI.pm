@@ -172,7 +172,7 @@ END
 
 # TODO: docs
 __PACKAGE__->set_sql('load_service', <<"END", 'freelancer');
-SELECT * FROM Services WHERE service_id = ?
+SELECT * FROM Services WHERE serv_id = ?
 END
 
 #### ^^^^ INSERT MORE QUERIES HERE ^^^^ ####
