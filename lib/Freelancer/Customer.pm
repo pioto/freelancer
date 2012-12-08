@@ -105,19 +105,15 @@ sub new {
 
     my $fdbi = Freelancer::DBI->new();
     try {
-        # find a unique ID
-        my $max_id_sth = $fdbi->sql_max_cust_id();
-        my ($max_id) = $max_id_sth->fetch();
-        $max_id //= 0;
-
-        $self->{cust_id} = $max_id+1;
-
         # add them to the db
         my $insert_sth = $fdbi->sql_insert_customer();
         $insert_sth->execute(
             $self->{cust_id}, $args{user}->id, @{$self}{qw(first_name last_name
             cust_since email phone company)}, $args{address}->id,
         );
+
+        $self->{cust_id} = $fdbi->db_freelancer()->last_insert_id(undef,
+            undef, undef, undef);
 
         $fdbi->commit();
     } catch (Freelancer::Customer::Error $e) {
