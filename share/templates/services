@@ -18,7 +18,7 @@
                 <td>[% service.serv_name %]</td>
                 <td>[% service.serv_desc %]</td>
                 <td>[% service.unit %]</td>
-                <td>[% service.price_perunit %]</td>
+                <td>[% service.price_perunit FILTER format('$%.2f') %]</td>
             </tr>
         [% END %]
         </tbody>
