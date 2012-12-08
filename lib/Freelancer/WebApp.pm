@@ -64,6 +64,8 @@ sub setup {
 
         'best_selling_services' => 'do_best_selling_services',
         'sales_by_zip' => 'do_sales_by_zip',
+
+        set_client_personal_info => 'do_set_client_personal_info',
     );
 }
 
@@ -655,5 +657,44 @@ sub do_sales_by_zip {
     $self->tt_process('sales_by_zip', {
             error => $error,
             sales_by_zip => $sales_by_zip,
+        });
+}
+
+sub do_set_client_personal_info {
+    my $self = shift;
+    my $q = $self->query;
+
+    # Login Required
+    my $user;
+    unless ($user = $self->session->param('user')) {
+        return $self->redirect($q->url.'/login');
+    }
+
+    # need to be given a customer to do this for, too
+    my $error;
+    my ($customer);
+    try {
+        $customer = Freelancer::Customer->load(
+            user => $user,
+            id => $q->param('cust_id'),
+        );
+
+        if ($q->param('set_client_personal_info')) {
+            $customer->set_client_personal_info(
+                family => $q->param('family'),
+                children => $q->param('children'),
+                birthday => $q->param('birthday'),
+                notes => $q->param('notes'),
+            );
+
+            return $self->redirect($q->url.'/customer?cust_id='.$customer->id)
+        }
+    } catch ($e) {
+        $error = $e;
+    }
+
+    $self->tt_process('set_client_personal_info', {
+            error => $error,
+            customer => $customer,
         });
 }

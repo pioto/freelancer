@@ -11,6 +11,7 @@
         <ul>
             <li><a href="[% c.query.url %]/given_service?cust_id=[% customer.id %]">Record Service for Customer</a></li>
             <li><a href="[% c.query.url %]/invoices?cust_id=[% customer.id %]">Invoices</a></li>
+            <li><a href="[% c.query.url %]/set_client_personal_info?cust_id=[% customer.id %]">Set Client Personal Info</a></li>
         </ul>
 
         <table border="1">

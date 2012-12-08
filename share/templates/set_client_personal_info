@@ -1,0 +1,26 @@
+[% INCLUDE header title = 'Customer' %]
+
+[% IF error %]
+        <p class="error">[% error %]</p>
+[% END %]
+
+        <h2>[% INCLUDE customer_name customer = customer %]</h2>
+
+        <form method="POST" action="">
+            <input type="hidden" name="cust_id" value="[% customer.id %]">
+
+            <dl>
+                <dt><label for="family">Family:</label></dt>
+                <dd><input type="text" name="family" id="family" value="[% customer.client_personal_info.family |html %]"></dd>
+                <dt><label for="children">Children:</label></dt>
+                <dd><input type="text" name="children" id="children" value="[% customer.client_personal_info.children |html %]"></dd>
+                <dt><label for="birthday">Birthday:</label></dt>
+                <dd><input type="date" name="birthday" id="birthday" value="[% customer.client_personal_info.birthday |html %]"></dd>
+                <dt><label for="notes">Notes:</label></dt>
+                <dd><textarea name="notes" id="notes">[% customer.client_personal_info.notes |html %]</textarea></dd>
+            </dl>
+
+            <input type="submit" name="set_client_personal_info" value="Set Personal Info">
+        </form>
+
+[% INCLUDE footer %]
