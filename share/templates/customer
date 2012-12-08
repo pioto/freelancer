@@ -13,4 +13,11 @@
             <li><a href="[% c.query.url %]/invoices?cust_id=[% customer.id %]">Invoices</a></li>
         </ul>
 
+        <table border="1">
+            <tr><th>Family:</th><td>[% customer.client_personal_info.family |html %]</td></tr>
+            <tr><th>Children:</th><td>[% customer.client_personal_info.children |html %]</td></tr>
+            <tr><th>Birthday:</th><td>[% customer.client_personal_info.birthday |html %]</td></tr>
+            <tr><th>Notes:</th><td>[% customer.client_personal_info.notes |html %]</td></tr>
+        </table>
+
 [% INCLUDE footer %]
