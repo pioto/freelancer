@@ -16,6 +16,7 @@ use CGI::Application::Plugin::TT;
 
 use Freelancer::Address;
 use Freelancer::Customer;
+use Freelancer::GivenService;
 use Freelancer::Service;
 use Freelancer::User;
 
@@ -315,11 +316,15 @@ sub do_given_service {
             id => $q->param('cust_id'),
         );
 
+        $services = Freelancer::Service->list(
+            user => $user,
+        );
+
         if ($q->param('given_service')) {
             my $service = Freelancer::Service->load(
                 id => $q->param('serv_id'),
             );
-            my $serv_given = Freelancer::ServiceGiven->new(
+            my $serv_given = Freelancer::GivenService->new(
                 customer => $customer,
                 service => $service,
                 date => $q->param('date'),
@@ -328,10 +333,6 @@ sub do_given_service {
 
             return $self->redirect($q->url.'/customer?cust_id='.$customer->id);
         }
-
-        $services = Freelancer::Service->list(
-            user => $user,
-        );
     } catch ($e) {
         $error = $e;
     }

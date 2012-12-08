@@ -178,8 +178,8 @@ END
 # TODO: docs
 __PACKAGE__->set_sql('insert_given_service', <<"END", 'freelancer');
 INSERT INTO Given_Services
-  (serv_id, cust_id, date, amount, invoice_id)
-VALUES (?, ?, ?, ?, ?, ?)
+  (serv_id, cust_id, date, amount)
+VALUES (?, ?, ?, ?)
 END
 
 # TODO: docs

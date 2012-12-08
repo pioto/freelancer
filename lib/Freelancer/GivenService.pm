@@ -36,7 +36,7 @@ sub new {
         # add them to the db
         my $insert_sth = $fdbi->sql_insert_given_service();
         $insert_sth->execute(
-            $args{service}->id, $args{customer}->id, @{$self}{qw(date amount invoice_id)}
+            $args{service}->id, $args{customer}->id, @{$self}{qw(date amount)}
         );
 
         $self->{serv_id} = $fdbi->db_freelancer()->last_insert_id(undef,
