@@ -262,6 +262,16 @@ SELECT zip, SUM(price_perunit * amount) sales
   ORDER BY sales DESC;
 END
 
+__PACKAGE__->set_sql('client_personal_info', <<END, 'freelancer');
+SELECT * FROM Client_Personal_Info WHERE cust_id = ?
+END
+
+__PACKAGE__->set_sql('set_client_personal_info', <<END, 'freelancer');
+INSERT OR REPLACE INTO Client_Personal_Info
+  (cust_id, user_id, family, children, birthday, notes)
+  VALUES (?, ?, ?, ?, ?, ?)
+END
+
 #### ^^^^ INSERT MORE QUERIES HERE ^^^^ ####
 
 #### INTERNAL GOO ####

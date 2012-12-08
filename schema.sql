@@ -93,3 +93,18 @@ CREATE TABLE Payments (
 
         FOREIGN KEY (invoice_id) REFERENCES Invoices
                 on delete SET DEFAULT on update CASCADE );
+
+CREATE TABLE Client_Personal_Info (
+    user_id integer,
+    cust_id integer,
+    family text,
+    children text,
+    birthday date,
+    notes text,
+
+    PRIMARY KEY (cust_id),
+    FOREIGN KEY (user_id) REFERENCES Users
+      ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (cust_id) REFERENCES Customers
+      ON DELETE CASCADE ON UPDATE CASCADE
+);

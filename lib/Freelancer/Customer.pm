@@ -214,4 +214,30 @@ sub company { $_[0]{company} }
 # TODO: POD
 sub address { $_[0]{address} ||= Freelancer::Address->load(id => $_[0]{addr_id}) }
 
+sub client_personal_info {
+    my $self = shift;
+
+    my $fdbi = Freelancer::DBI->new;
+    my $sth = $fdbi->sql_client_personal_info;
+    $sth->execute($self->id);
+
+    my $r = $sth->fetchrow_hashref('NAME_lc');
+    # should only get 1, because we're looking up by primary key
+    $sth->finish;
+
+    return $r;
+}
+
+sub set_client_personal_info {
+    my $self = shift;
+    my %args = @_;
+
+    my $fdbi = Freelancer::DBI->new;
+    my $sth = $fdbi->sql_set_client_personal_info;
+    $sth->execute($self->id, $self->{user_id}, @{$args}{qw(family
+        children birthday notes)});
+
+    $fdbi->commit();
+}
+
 1;
