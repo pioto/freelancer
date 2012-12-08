@@ -151,4 +151,14 @@ sub amount_due {
     return $amt;
 }
 
+sub set_status {
+    my $self = shift;
+    my %args = @_;
+
+    my $fdbi = Freelancer::DBI->new();
+    my $sth = $fdbi->sql_invoice_set_status();
+    $sth->execute($args{status}, $self->id);
+    $fdbi->commit();
+}
+
 1;

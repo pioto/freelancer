@@ -55,6 +55,7 @@ sub setup {
         'create_invoice' => 'do_create_invoice',
         'invoices' => 'do_invoices',
         'invoice' => 'do_invoice',
+        'print_invoice' => 'do_print_invoice',
 
         'add_charges' => 'do_add_charges',
         'add_payment' => 'do_add_payment',
@@ -448,7 +449,6 @@ sub do_invoice {
             customer => $customer,
             invoice => $invoice,
         );
-        use YAML; warn Dump($given_services);
     } catch ($e) {
         $error = $e;
     }
@@ -561,5 +561,46 @@ sub do_add_payment {
             error => $error,
             customer => $customer,
             invoice => $invoice,
+        });
+}
+
+sub do_print_invoice {
+    my $self = shift;
+    my $q = $self->query;
+
+    # Login Required
+    my $user;
+    unless ($user = $self->session->param('user')) {
+        return $self->redirect($q->url.'/login');
+    }
+
+    # need to be given a customer to do this for, too
+    my $error;
+    my ($customer, $invoice, $given_services);
+    try {
+        $customer = Freelancer::Customer->load(
+            user => $user,
+            id => $q->param('cust_id'),
+        );
+        $invoice = Freelancer::Invoice->load(
+            user => $user,
+            customer => $customer,
+            id => $q->param('invoice_id'),
+        );
+        $given_services = Freelancer::GivenService->list(
+            customer => $customer,
+            invoice => $invoice,
+        );
+        $invoice->set_status(status => 'sent');
+    } catch ($e) {
+        $error = $e;
+    }
+
+    $self->tt_process('print_invoice', {
+            error => $error,
+            user => $user,
+            customer => $customer,
+            invoice => $invoice,
+            given_services => $given_services,
         });
 }

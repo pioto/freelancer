@@ -248,6 +248,10 @@ __PACKAGE__->set_sql('load_payment', <<"END", 'freelancer');
 SELECT * FROM Payments WHERE payment_num = ?
 END
 
+__PACKAGE__->set_sql('invoice_set_status', <<"END", 'freelancer');
+UPDATE Invoices SET status = ? WHERE invoice_id = ?
+END
+
 #### ^^^^ INSERT MORE QUERIES HERE ^^^^ ####
 
 #### INTERNAL GOO ####

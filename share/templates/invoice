@@ -14,37 +14,23 @@
         </table>
 
         <ul>
+            [% IF invoice.status == 'new' %]
             <li>
                 <a href="[% c.query.url %]/add_charges?invoice_id=[% invoice.id %]&cust_id=[% customer.id %]">Add Charges</a>
             </li>
             <li>
+                <a href="[% c.query.url %]/print_invoice?invoice_id=[% invoice.id %]&cust_id=[% customer.id %]">Finalize & Print Invoice</a>
+            </li>
+            [% ELSIF invoice.status == 'sent' %]
+            <li>
                 <a href="[% c.query.url %]/add_payment?invoice_id=[% invoice.id %]&cust_id=[% customer.id %]">Add Payment</a>
             </li>
+            [% ELSIF invoice.status == 'paid' %]
+            [% END %]
         </ul>
 
         [% IF given_services && given_services.size %]
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Service</th>
-                    <th>Quantity</th>
-                    <th>Per Unit</th>
-                    <th>Subtotal</th>
-                </tr>
-            </thead>
-            <tbody>
-                [% FOREACH given_service = given_services %]
-                <tr>
-                    <td>[% given_service.date |html %]</td>
-                    <td>[% given_service.service.serv_name |html %]</td>
-                    <td>[% given_service.amount |html %]</td>
-                    <td>[% given_service.service.price_perunit FILTER format('$%.2f') |html %]</td>
-                    <td>[% given_service.cost FILTER format('$%.2f') |html %]</td>
-                </tr>
-                [% END %]
-            </tbody>
-        </table>
+        [% INCLUDE print_given_services given_services = given_services %]
         [% ELSE %]
         <p>No charges added yet.</p>
         [% END %]

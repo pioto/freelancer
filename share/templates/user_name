@@ -1,0 +1,4 @@
+[% user.first_name |html %] [% user.last_name |html %] [% IF
+user.company %]
+[% user.company %]
+[% END %]

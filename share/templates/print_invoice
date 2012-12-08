@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Invoice for [% INCLUDE customer_name customer = customer %]</title>
+    </head>
+    <body>
+
+        <h1>[% INCLUDE user_name user = user %]</h1>
+        [% INCLUDE print_address address = user.address %]
+
+        <h2>[% INCLUDE customer_name customer = customer %]</h2>
+        [% INCLUDE print_address address = customer.address %]
+
+        <table>
+            <tr>
+                <th>Invoice Number:</th>
+                <td>[% customer.id |html %]-[% invoice.id |html %]</td>
+            </tr>
+            <tr><th>Issue Date:</th><td>[% invoice.issue_date |html %]</td></tr>
+            <tr><th>Due Date:</th><td>[% invoice.due_date |html %]</td></tr>
+        </table>
+
+        [% INCLUDE print_given_services given_services = given_services %]
+
+        <table>
+            <tr><th>Total Amount Due:</th><td>[% invoice.amount_due FILTER format('$%.2f') %]</td></tr>
+        </table>
+    </body>
+</html>

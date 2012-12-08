@@ -1,0 +1,23 @@
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Service</th>
+                    <th>Quantity</th>
+                    <th>Per Unit</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                [% FOREACH given_service = given_services %]
+                <tr>
+                    <td>[% given_service.date |html %]</td>
+                    <td>[% given_service.service.serv_name |html %]</td>
+                    <td>[% given_service.amount |html %]</td>
+                    <td>[% given_service.service.price_perunit FILTER format('$%.2f') |html %]</td>
+                    <td>[% given_service.cost FILTER format('$%.2f') |html %]</td>
+                </tr>
+                [% END %]
+            </tbody>
+        </table>
+
