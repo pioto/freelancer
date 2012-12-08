@@ -22,6 +22,8 @@ use Freelancer::Payment;
 use Freelancer::Service;
 use Freelancer::User;
 
+use Freelancer::Reports;
+
 my $BASE_DIR = dist_dir('Freelancer');
 
 sub setup {
@@ -59,6 +61,8 @@ sub setup {
 
         'add_charges' => 'do_add_charges',
         'add_payment' => 'do_add_payment',
+
+        'best_selling_services' => 'do_best_selling_services',
     );
 }
 
@@ -602,5 +606,29 @@ sub do_print_invoice {
             customer => $customer,
             invoice => $invoice,
             given_services => $given_services,
+        });
+}
+
+sub do_best_selling_services {
+    my $self = shift;
+    my $q = $self->query;
+
+    # Login Required
+    my $user;
+    unless ($user = $self->session->param('user')) {
+        return $self->redirect($q->url.'/login');
+    }
+
+    my $error;
+    my $best_selling_services;
+    try {
+        $best_selling_services = Freelancer::Reports->best_selling_services(user => $user);
+    } catch ($e) {
+        $error = $e;
+    }
+
+    $self->tt_process('best_selling_services', {
+            error => $error,
+            best_selling_services => $best_selling_services,
         });
 }

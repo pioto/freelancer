@@ -252,6 +252,13 @@ __PACKAGE__->set_sql('invoice_set_status', <<"END", 'freelancer');
 UPDATE Invoices SET status = ? WHERE invoice_id = ?
 END
 
+__PACKAGE__->set_sql('best_selling_services', <<"END", 'freelancer');
+SELECT serv_id, SUM(amount) amt FROM Services JOIN Given_Services USING (serv_id)
+WHERE user_id = ?
+GROUP BY serv_id
+ORDER BY amt DESC
+END
+
 #### ^^^^ INSERT MORE QUERIES HERE ^^^^ ####
 
 #### INTERNAL GOO ####

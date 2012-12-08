@@ -2,6 +2,8 @@
 
        <p><a href="[% c.query.url %]/add_service">Add a Service</a></p>
 
+       <p><a href="[% c.query.url %]/best_selling_services">Best Selling Services</a></p>
+
 [% IF services && services.size %]
     <table border="1">
         <thead>

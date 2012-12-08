@@ -1,0 +1,25 @@
+[% INCLUDE header title = 'Services' %]
+
+[% IF error %]
+        <p class="error">[% error %]</p>
+[% END %]
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Service</th>
+                <th>Amount Sold</th>
+                <th>Total Revenue</th>
+            </tr>
+        </thead>
+        <tbody>
+    [% FOREACH best_serv = best_selling_services %]
+            <tr>
+                <td>[% best_serv.service.serv_name |html %]</td>
+                <td>[% best_serv.amt |html %]</td>
+                <td>[% best_serv.amt * best_serv.service.price_perunit
+                    FILTER format('$%.2f') |html %]</td>
+            </tr>
+    [% END %]
+        </tbody>
+    </table>
