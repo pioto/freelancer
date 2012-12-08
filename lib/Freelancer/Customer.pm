@@ -186,10 +186,10 @@ sub load {
 
 sub _load {
     my $class = shift;
-    my ($addr_info) = @_;
+    my ($cust_info) = @_;
 
     my %o;
-    $o{$_} = $addr_info->{$_} foreach (@OBJ_ATTRS);
+    $o{$_} = $cust_info->{$_} foreach (@OBJ_ATTRS);
     my $self = bless \%o, $class;
     return $self;
 }
