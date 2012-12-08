@@ -175,6 +175,23 @@ __PACKAGE__->set_sql('load_service', <<"END", 'freelancer');
 SELECT * FROM Services WHERE serv_id = ?
 END
 
+# TODO: docs
+__PACKAGE__->set_sql('insert_given_service', <<"END", 'freelancer');
+INSERT INTO Given_Services
+  (serv_id, cust_id, date, amount, invoice_id)
+VALUES (?, ?, ?, ?, ?, ?)
+END
+
+# TODO: docs
+__PACKAGE__->set_sql('list_given_services', <<"END", 'freelancer');
+SELECT * FROM Given_Services WHERE cust_id = ?
+END
+
+# TODO: docs
+__PACKAGE__->set_sql('load_given_service', <<"END", 'freelancer');
+SELECT * FROM Given_Services WHERE serv_id = ? AND cust_id = ? AND date = ?
+END
+
 #### ^^^^ INSERT MORE QUERIES HERE ^^^^ ####
 
 #### INTERNAL GOO ####
