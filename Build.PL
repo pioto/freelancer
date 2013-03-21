@@ -18,6 +18,7 @@ my $build = Module::Build->new(
         'File::Spec' => 0,
         'FindBin' => 0,
         'Getopt::Long' => '2.33',
+        'Ima::DBI' => 0,
         'Pod::Usage' => 0,
         'Term::Prompt' => 0,
         'YAML' => 0,
